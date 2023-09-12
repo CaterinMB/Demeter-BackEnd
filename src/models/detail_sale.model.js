@@ -11,4 +11,6 @@ export const detail_sale = sequelize.define('DETALLE_VENTAS', {
         type: DataTypes.INTEGER,
         required: true
     }
+}, {
+    timestamps: false
 });

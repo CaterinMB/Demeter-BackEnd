@@ -42,6 +42,8 @@ export const supplies = sequelize.define('INSUMOS', {
         type: DataTypes.INTEGER,
         required: true
     }
+}, {
+    timestamps: false
 });
 
 supplies.hasMany(detail_shopping, {

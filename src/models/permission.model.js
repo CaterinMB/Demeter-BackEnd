@@ -30,8 +30,22 @@ export const permissions = sequelize.define('PERMISOS', {
     },
     _Url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'La URL es requerida'
+            },
+            isUrl: {
+                msg: 'La URL debe tener un formato válido'
+            },
+            len: {
+                args: [1, 255],
+                msg: 'La URL debe tener entre 1 y 255 caracteres'
+            }
+        }
     }
+}, {
+    timestamps: false
 });
 
 permissions.hasOne(role_permission, {

@@ -32,6 +32,8 @@ export const category_product = sequelize.define('CATEGORIA_PRODUCTOS', {
         type: DataTypes.BLOB,
         required: true
     }
+}, {
+    timestamps: false
 });
 
 category_product.hasMany(product, {

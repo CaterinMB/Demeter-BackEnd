@@ -34,7 +34,8 @@ export const sale = sequelize.define('VENTAS', {
         type: DataTypes.DECIMAL(10, 2),
         required: true
     }
-
+}, {
+    timestamps: false
 });
 
 sale.hasMany(detail_sale, {

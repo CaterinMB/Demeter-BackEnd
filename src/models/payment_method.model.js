@@ -28,6 +28,8 @@ export const payment_method = sequelize.define('METODO_PAGO', {
             }
         }
     }
+}, {
+    timestamps: false
 });
 
 payment_method.hasMany(sale, {

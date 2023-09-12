@@ -32,6 +32,8 @@ export const category_supplies = sequelize.define('CATEGORIA_INSUMOS', {
         type: DataTypes.BLOB,
         required: true
     }
+}, {
+    timestamps: false
 });
 
 category_supplies.hasMany(supplies, {

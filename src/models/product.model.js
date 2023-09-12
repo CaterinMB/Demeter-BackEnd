@@ -32,13 +32,43 @@ export const product = sequelize.define('PRODUCTOS', {
     },
     Precio: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El precio es requerido'
+            },
+            isDecimal: {
+                args: [true],
+                msg: 'El precio debe ser un valor decimal'
+            },
+            min: {
+                args: [50.00],
+                msg: 'El precio debe ser al menos 50.00'
+            }
+        }
     },
     Imagen: {
         type: DataTypes.BLOB,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            notNull: {
+                msg: 'La imagen es requerida'
+            }
+        }
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerida'
+            }
+        }
     }
+}, {
+    timestamps: false
 });
 
 product.hasMany(recipe, {

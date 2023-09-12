@@ -28,6 +28,8 @@ export const restaurant = sequelize.define('RESTAURANTES', {
             }
         }
     }
+}, {
+    timestamps: false
 });
 
 restaurant.hasMany(waiter, {
