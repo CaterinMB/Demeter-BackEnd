@@ -28,6 +28,8 @@ export const waiter = sequelize.define('MESEROS', {
             }
         }
     }
+}, {
+    timestamps: false
 });
 
 waiter.hasMany(sale, {

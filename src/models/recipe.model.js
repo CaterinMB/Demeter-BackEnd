@@ -9,6 +9,24 @@ export const recipe = sequelize.define('RECETAS', {
     },
     Cantidad: {
         type: DataTypes.SMALLINT,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'La cantidad es requerida'
+            },
+            isInt: {
+                msg: 'La cantidad debe ser un número entero'
+            },
+            min: {
+                args: [1],
+                msg: 'La cantidad debe ser al menos 1'
+            },
+            max: {
+                args: [25],
+                msg: 'La cantidad no puede exceder 25'
+            }
+        }
     }
+}, {
+    timestamps: false
 });

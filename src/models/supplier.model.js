@@ -40,6 +40,8 @@ export const supplier = sequelize.define('PROVEEDORES', {
         type: DataTypes.STRING,
         required: true
     }
+}, {
+    timestamps: false
 });
 
 supplier.hasMany(shopping, {

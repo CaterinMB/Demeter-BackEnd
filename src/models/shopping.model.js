@@ -21,6 +21,8 @@ export const shopping = sequelize.define('COMPRAS', {
         defaultValue: true,
         required: true
     }
+}, {
+    timestamps: false
 });
 
 shopping.hasMany(detail_shopping, {
