@@ -10,7 +10,7 @@ export const category_supplies = sequelize.define('CATEGORIA_INSUMOS', {
     },
     Nombre_Categoria: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'
@@ -30,7 +30,17 @@ export const category_supplies = sequelize.define('CATEGORIA_INSUMOS', {
     },
     Imagen: {
         type: DataTypes.BLOB,
-        required: true
+        allowNull: false
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El nombre es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

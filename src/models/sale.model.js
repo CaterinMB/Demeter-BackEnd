@@ -11,28 +11,28 @@ export const sale = sequelize.define('VENTAS', {
     Estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        required: true
+        allowNull: false
     },
     Fecha: {
         type: DataTypes.DATE,
-        required: true
+        allowNull: false
     },
     Venta_Rapida: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        required: true
+        allowNull: false
     },
     Descuento: {
         type: DataTypes.DECIMAL(10, 2),
-        required: true
+        allowNull: false
     },
     Sub_Total: {
         type: DataTypes.DECIMAL(10, 2),
-        required: true
+        allowNull: false
     },
     Total: {
         type: DataTypes.DECIMAL(10, 2),
-        required: true
+        allowNull: false
     }
 }, {
     timestamps: false

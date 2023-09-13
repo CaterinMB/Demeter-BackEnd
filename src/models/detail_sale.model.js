@@ -9,7 +9,7 @@ export const detail_sale = sequelize.define('DETALLE_VENTAS', {
     },
     Cantidad: {
         type: DataTypes.INTEGER,
-        required: true
+        allowNull: false
     }
 }, {
     timestamps: false

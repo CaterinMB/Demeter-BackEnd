@@ -10,7 +10,7 @@ export const category_product = sequelize.define('CATEGORIA_PRODUCTOS', {
     },
     Nombre_Categoria: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'
@@ -30,18 +30,33 @@ export const category_product = sequelize.define('CATEGORIA_PRODUCTOS', {
     },
     Imagen: {
         type: DataTypes.BLOB,
-        required: true
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El nombre es requerido'
+            }
+        }
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El nombre es requerido'
+            }
+        }
     }
 }, {
     timestamps: false
 });
 
 category_product.hasMany(product, {
-    foreignKey: 'CategoriaPreductos_ID',
+    foreignKey: 'CategoriaProductos_ID',
     sourceKey: 'ID_CATEGORIA_PRODUCTOS'
 })
 
 product.belongsTo(category_product, {
-    foreignKey: 'CategoriaPreductos_ID',
+    foreignKey: 'CategoriaProductos_ID',
     targetId: 'ID_CATEGORIA_PRODUCTOS'
 })
