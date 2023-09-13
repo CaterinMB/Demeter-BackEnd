@@ -128,6 +128,16 @@ export const user = sequelize.define('USUARIOS', {
             //     }
             // }
         }
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El nombre es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

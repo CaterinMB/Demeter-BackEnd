@@ -10,7 +10,7 @@ export const restaurant = sequelize.define('RESTAURANTES', {
     },
     Nombre_Restaurante: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'

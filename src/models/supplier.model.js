@@ -10,7 +10,7 @@ export const supplier = sequelize.define('PROVEEDORES', {
     },
     Nombre: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'
@@ -30,15 +30,15 @@ export const supplier = sequelize.define('PROVEEDORES', {
     },
     Telefono: {
         type: DataTypes.INTEGER,
-        required: true
+        allowNull: false
     },
     Email: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     Ciudad: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     }
 }, {
     timestamps: false

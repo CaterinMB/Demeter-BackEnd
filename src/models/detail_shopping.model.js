@@ -9,11 +9,11 @@ export const detail_shopping = sequelize.define('DETALLE_COMPRAS', {
     },
     Cantidad: {
         type: DataTypes.INTEGER,
-        required: true
+        allowNull: false
     },
     Valor_Insumo: {
         type: DataTypes.DECIMAL(10, 2),
-        required: true
+        allowNull: false
     }
 }, {
     timestamps: false

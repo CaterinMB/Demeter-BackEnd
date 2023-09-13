@@ -11,7 +11,7 @@ export const supplies = sequelize.define('INSUMOS', {
     },
     Nombre_Insumo: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'
@@ -32,15 +32,15 @@ export const supplies = sequelize.define('INSUMOS', {
     Cantidad_Insumo: {
         type: DataTypes.SMALLINT,
         // defaultValue: 0,
-        required: true
+        allowNull: false
     },
     Imagen: {
         type: DataTypes.BLOB,
-        required: true
+        allowNull: false
     },
     Stock_Minimo: {
         type: DataTypes.INTEGER,
-        required: true
+        allowNull: false
     }
 }, {
     timestamps: false

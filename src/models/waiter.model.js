@@ -10,7 +10,7 @@ export const waiter = sequelize.define('MESEROS', {
     },
     Nombre: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'

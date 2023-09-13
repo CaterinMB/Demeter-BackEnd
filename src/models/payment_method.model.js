@@ -10,7 +10,7 @@ export const payment_method = sequelize.define('METODO_PAGO', {
     },
     Nombre: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false,
         validate: {
             notNull: {
                 msg: 'El nombre es requerido'

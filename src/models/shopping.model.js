@@ -10,16 +10,16 @@ export const shopping = sequelize.define('COMPRAS', {
     },
     Fecha_Compra: {
         type: DataTypes.DATE,
-        required: true
+        allowNull: false
     },
     Valor_Compra: {
         type: DataTypes.DECIMAL(10, 2),
-        required: true
+        allowNull: false
     },
     Estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        required: true
+        allowNull: false
     }
 }, {
     timestamps: false
