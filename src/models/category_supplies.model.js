@@ -38,7 +38,7 @@ export const category_supplies = sequelize.define('CATEGORIA_INSUMOS', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'El nombre es requerido'
+                msg: 'El estado es requerido'
             }
         }
     }

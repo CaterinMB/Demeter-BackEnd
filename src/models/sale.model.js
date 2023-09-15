@@ -8,7 +8,7 @@ export const sale = sequelize.define('VENTAS', {
         primaryKey: true,
         autoIncrement: true
     },
-    Estado: {
+    Pago: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false
@@ -33,6 +33,16 @@ export const sale = sequelize.define('VENTAS', {
     Total: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
+    },
+    EstadoVenta: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

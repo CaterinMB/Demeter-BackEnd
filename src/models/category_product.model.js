@@ -43,7 +43,7 @@ export const category_product = sequelize.define('CATEGORIA_PRODUCTOS', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'El nombre es requerido'
+                msg: 'El estado es requerido'
             }
         }
     }

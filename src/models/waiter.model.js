@@ -27,6 +27,16 @@ export const waiter = sequelize.define('MESEROS', {
                 } 
             }
         }
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

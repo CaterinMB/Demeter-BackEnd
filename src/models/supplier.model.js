@@ -39,6 +39,16 @@ export const supplier = sequelize.define('PROVEEDORES', {
     Ciudad: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false
