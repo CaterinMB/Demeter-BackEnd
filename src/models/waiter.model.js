@@ -28,6 +28,15 @@ export const waiter = sequelize.define('MESEROS', {
             }
         }
     },
+    Telefono: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El telefono es requerido'
+            }
+        }
+    },
     Estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
