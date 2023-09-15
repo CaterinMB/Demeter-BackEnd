@@ -19,7 +19,12 @@ export const shopping = sequelize.define('COMPRAS', {
     Estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

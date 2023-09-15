@@ -26,16 +26,6 @@ export const recipe = sequelize.define('RECETAS', {
                 msg: 'La cantidad no puede exceder 25'
             }
         }
-    },
-    Estado: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
-            }
-        }
     }
 }, {
     timestamps: false

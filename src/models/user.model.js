@@ -135,7 +135,7 @@ export const user = sequelize.define('USUARIOS', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'El nombre es requerido'
+                msg: 'El estado es requerido'
             }
         }
     }

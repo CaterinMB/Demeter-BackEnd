@@ -41,6 +41,16 @@ export const supplies = sequelize.define('INSUMOS', {
     Stock_Minimo: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    Estado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

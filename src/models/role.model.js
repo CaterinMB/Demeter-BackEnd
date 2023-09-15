@@ -36,7 +36,7 @@ export const role = sequelize.define('ROLES', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: 'El nombre es requerido'
+                msg: 'El estado es requerido'
             }
         }
     }
