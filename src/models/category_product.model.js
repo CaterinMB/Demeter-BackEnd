@@ -28,15 +28,6 @@ export const category_product = sequelize.define('CATEGORIA_PRODUCTOS', {
             }
         }
     },
-    Imagen: {
-        type: DataTypes.BLOB,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
-            }
-        }
-    },
     Estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

@@ -28,10 +28,6 @@ export const category_supplies = sequelize.define('CATEGORIA_INSUMOS', {
             }
         }
     },
-    Imagen: {
-        type: DataTypes.BLOB,
-        allowNull: false
-    },
     Estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

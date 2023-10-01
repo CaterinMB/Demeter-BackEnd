@@ -47,16 +47,6 @@ export const product = sequelize.define('PRODUCTOS', {
             }
         }
     },
-    Imagen: {
-        type: DataTypes.BLOB,
-        allowNull: false,
-        unique: true,
-        validate: {
-            notNull: {
-                msg: 'La imagen es requerida'
-            }
-        }
-    },
     Estado: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
