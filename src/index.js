@@ -1,29 +1,26 @@
 import app from './app.js'
 import { sequelize } from './db/dataBase.js'
 
-import './models/category_product.model.js'
-import './models/category_supplies.model.js'
-import './models/detail_sale.model.js'
-import './models/detail_shopping.model.js'
-import './models/payment_method.model.js'
-import './models/permission.model.js'
-import './models/product.model.js'
-import './models/recipe.model.js'
-import './models/restaurant.model.js'
-import './models/role_permission.model.js'
-import './models/role.model.js'
-import './models/sale.model.js'
-import './models/shopping.model.js'
-import './models/supplier.model.js'
-import './models/supplies.model.js'
-import './models/user.model.js'
-import './models/waiter.model.js'
+import './models/Permission.model.js'
+import './models/RoleDetail.model.js'
+import './models/Role.model.js'
+import './models/User.model.js'
+import './models/Login.model.js'
+import './models/Supplier.model.js'
+import './models/Category.model.js'
+import './models/Supplies.model.js'
+import './models/Product.model.js'
+import './models/ProductDetail.model.js'
+import './models/Shopping.model.js'
+import './models/ShoppingDetail.model.js'
+import './models/Sale.model.js'
+import './models/SaleDetail.model.js'
 
 async function main() {
     try{
         await sequelize.sync({force: true})
-        app.listen(4000);
-        console.log('Server on port ', 4000);
+        app.listen(4080);
+        console.log('Server on port ', 4080);
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }

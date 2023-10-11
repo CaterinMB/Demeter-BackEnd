@@ -1,48 +1,78 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db/dataBase.js';
-import { detail_shopping } from './detail_shopping.model.js';
-import { recipe } from './recipe.model.js';
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/dataBase.js";
+import { productDetail } from './ProductDetail.model.js'
+import { shoppingDetail } from './ShoppingDetail.model.js'
 
-export const supplies = sequelize.define('INSUMOS', {
-    ID_INSUMOS: {
+export const supplies =  sequelize.define('Supplies', {
+
+    ID_Supplies: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
-    },
-    Nombre_Insumo: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
-            },
-            noSpecialCharacters(value) {
-                const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-                if (specialCharacters.test(value)) {
-                  throw new Error('Este campo no puede contener caracteres especiales');
+        autoIncrement: true 
+    }, 
+
+    Name_Supplies: {
+        type: DataTypes.STRING(30), 
+        allowNull: false, 
+        validate:{
+            notNull:{
+                msg: "El nombre del insumo es requerido"
+            }, 
+            customValidate(value) {
+                
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('El nombre del insumo debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
             },
-            noNumbers(value) {
-                if (/[0-9]/.test(value)) {
-                    throw new Error('Este campo no puede contener números');
-                } 
+            len: {
+                args: [5, 30],
+                msg: 'El nombre del insumo debe tener de 5 a 30 caracteres.'
             }
         }
     },
-    Cantidad_Insumo: {
-        type: DataTypes.SMALLINT,
-        // defaultValue: 0,
-        allowNull: false
-    },
-    Imagen: {
-        type: DataTypes.BLOB,
-        allowNull: false
-    },
-    Stock_Minimo: {
+
+    Unit: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false, 
+        validate: {
+            notNull:{
+                msg: "La cantidad del insumo es requerido"
+            }, 
+            isInt: true, 
+            min: 0,
+            max: 9999
+        },
     },
-    Estado: {
+
+    Measure: {
+        type: DataTypes.STRING(15),
+        allowNull: false, 
+        validate: {
+            notNull:{
+                msg: "La medida del insumo es requerido"
+            }, 
+            customValidate(value) {
+                if (!/^[A-Za-z\s()]+$/.test(value)) {
+                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
+                }
+            }
+        },
+    },
+
+    Stock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notNull:{
+                msg: "El stock del insumo es requerido"
+            }, 
+            isInt: true,
+            min: 0,
+            max: 9999
+        },
+    },
+
+    State: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false,
@@ -56,22 +86,22 @@ export const supplies = sequelize.define('INSUMOS', {
     timestamps: false
 });
 
-supplies.hasMany(detail_shopping, {
-    foreignKey: 'Insumos_ID',
-    sourceKey: 'ID_INSUMOS'
+supplies.hasMany(productDetail, {
+    foreignKey: 'Supplies_ID',
+    sourceKey: 'ID_Supplies'
 })
 
-detail_shopping.belongsTo(supplies, {
-    foreignKey: 'Insumos_ID',
-    targetId: 'ID_INSUMOS'
+productDetail.belongsTo(supplies, {
+    foreignKey: 'Supplies_ID',
+    targetKey: 'ID_Supplies'
 })
 
-supplies.hasMany(recipe, {
-    foreignKey: 'Insumos_ID',
-    sourceKey: 'ID_INSUMOS'
+supplies.hasMany(shoppingDetail, {
+    foreignKey: 'Supplies_ID',
+    sourceKey: 'ID_Supplies'
 })
 
-recipe.belongsTo(supplies, {
-    foreignKey: 'Insumos_ID',
-    targetId: 'ID_INSUMOS'
+shoppingDetail.belongsTo(supplies, {
+    foreignKey: 'Supplies_ID',
+    targetKey: 'ID_Supplies'
 })

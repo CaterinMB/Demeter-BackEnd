@@ -1,42 +1,28 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db/dataBase.js';
-import { user } from './user.model.js';
-import { role_permission } from './role_permission.model.js';
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/dataBase.js";
+import { roleDetail } from './RoleDetail.model.js'
+import { user } from './User.model.js'
 
-export const role = sequelize.define('ROLES', {
-    ID_ROL: {
+export const role =  sequelize.define('Roles', {
+
+    ID_Role: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    Nombre_Rol: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
-            },
-            noSpecialCharacters(value) {
-                const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-                if (specialCharacters.test(value)) {
-                    throw new Error('Este campo no puede contener caracteres especiales');
+        primaryKey: true, 
+        autoIncrement: true 
+    }, 
+
+    Name_Role: {
+        type: DataTypes.STRING(30), 
+        allowNull: false, 
+        validate:{
+            notNull:{
+                msg: "El nombre es requerido"
+            }, 
+            customValidate(value) {
+                
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
-            },
-            noNumbers(value) {
-                if (/[0-9]/.test(value)) {
-                    throw new Error('Este campo no puede contener números');
-                }
-            }
-        }
-    },
-    Estado: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El estado es requerido'
             }
         }
     }
@@ -44,22 +30,22 @@ export const role = sequelize.define('ROLES', {
     timestamps: false
 });
 
+role.hasMany(roleDetail, {
+    foreignKey: 'Role_ID',
+    sourceKey: 'ID_Role'
+})
+
+roleDetail.belongsTo(role, {
+    foreignKey: 'Role_ID',
+    targetKey: 'ID_Role'
+})
+
 role.hasMany(user, {
-    foreignKey: 'Rol_ID',
-    sourceKey: 'ID_ROL'
+    foreignKey: 'Role_ID',
+    sourceKey: 'ID_Role'
 })
 
 user.belongsTo(role, {
-    foreignKey: 'Rol_ID',
-    targetId: 'ID_ROL'
-})
-
-role.hasOne(role_permission, {
-    foreignKey: 'Rol_ID',
-    sourceKey: 'ID_ROL'
-})
-
-role_permission.belongsTo(role, {
-    foreignKey: 'Rol_ID',
-    targetKey: 'ID_ROL'
+    foreignKey: 'Role_ID',
+    targetKey: 'ID_Role'
 })

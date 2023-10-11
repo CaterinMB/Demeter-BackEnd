@@ -1,22 +1,37 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db/dataBase.js';
-import { detail_shopping } from './detail_shopping.model.js';
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/dataBase.js";
+import { shoppingDetail } from './ShoppingDetail.model.js'
 
-export const shopping = sequelize.define('COMPRAS', {
-    ID_COMPRAS: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+export const shopping = sequelize.define('Shoppings', {
+
+    ID_Shopping:{
+        type: DataTypes.INTEGER, 
+        primaryKey: true, 
+        autoIncrement: true,
+    }, 
+
+    Datetime: {
+        type: DataTypes.DATE, 
+        allowNull: false,
+        validate: {
+            notNull:{
+                msg: "El precio del producto es requerido"
+            }
+        }
     },
-    Fecha_Compra: {
-        type: DataTypes.DATE,
-        allowNull: false
+
+    Total: {
+        type: DataTypes.DECIMAL(10,2),
+        allowNull: false,
+        validate: {
+            notNull:{
+                msg: "El precio del producto es requerido"
+            }, 
+            isInt: true
+        }
     },
-    Valor_Compra: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-    },
-    Estado: {
+
+    State: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false,
@@ -30,12 +45,12 @@ export const shopping = sequelize.define('COMPRAS', {
     timestamps: false
 });
 
-shopping.hasMany(detail_shopping, {
-    foreignKey: 'Compras_ID',
-    sourceKey: 'ID_COMPRAS'
+shopping.hasMany(shoppingDetail, {
+    foreignKey: 'Shopping_ID',
+    sourceKey: 'ID_Shopping'
 })
 
-detail_shopping.belongsTo(shopping, {
-    foreignKey: 'Compras_ID',
-    targetId: 'ID_COMPRAS'
+shoppingDetail.belongsTo(shopping, {
+    foreignKey: 'Shopping_ID',
+    targetKey: 'ID_Shopping'
 })

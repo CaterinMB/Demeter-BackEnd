@@ -1,59 +1,41 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db/dataBase.js';
-import { role_permission } from './role_permission.model.js';
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/dataBase.js";
+import { roleDetail } from './RoleDetail.model.js';
 
-export const permissions = sequelize.define('PERMISOS', {
-    ID_PERMISO: {
+export const permission = sequelize.define('Permissions', {
+
+    ID_Permission: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    },
-    Nombre_Permiso: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
+    }, 
+
+    Name_Permission: {
+        type: DataTypes.STRING(30),
+        allowNull: false, 
+        validate:{
+            notNull:{
+                msg: "El nombre es requerido"
             },
-            noSpecialCharacters(value) {
-                const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-                if (specialCharacters.test(value)) {
-                  throw new Error('Este campo no puede contener caracteres especiales');
+            customValidate(value) {
+                
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
-            },
-            noNumbers(value) {
-                if (/[0-9]/.test(value)) {
-                    throw new Error('Este campo no puede contener números');
-                } 
-            }
-        }
-    },
-    _Url: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'La URL es requerida'
-            },
-            isUrl: {
-                msg: 'La URL debe tener un formato válido'
-            },
-            len: {
-                args: [1, 255],
-                msg: 'La URL debe tener entre 1 y 255 caracteres'
             }
         }
     }
+
 }, {
     timestamps: false
 });
 
-permissions.hasOne(role_permission, {
-    foreignKey: 'Permiso_ID',
-    sourceKey: 'ID_PERMISO'
+permission.hasMany(roleDetail, {
+    foreignKey: 'Permission_ID',
+    sourceKey: 'ID_Permission'
 })
 
-role_permission.belongsTo(permissions, {
-    foreignKey: 'Permiso_ID',
-    targetKey: 'ID_PERMISO'
+roleDetail.belongsTo(permission, {
+    foreignKey: 'Permission_ID',
+    targetKey: 'ID_Permission'
 })

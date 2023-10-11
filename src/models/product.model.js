@@ -1,59 +1,59 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db/dataBase.js';
-import { recipe } from './recipe.model.js';
-import { detail_sale } from './detail_sale.model.js'
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/dataBase.js";
+import { productDetail } from './ProductDetail.model.js'
+import { shoppingDetail } from './ShoppingDetail.model.js'
 
-export const product = sequelize.define('PRODUCTOS', {
-    ID_PRODUCTO: {
+export const product =  sequelize.define('Products', {
+
+    ID_Product: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    Nombre_Producto: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
+        primaryKey: true, 
+        autoIncrement: true 
+    }, 
+
+    Name_Products: {
+        type: DataTypes.STRING(30), 
+        allowNull: false, 
+        validate:{
+            notNull:{
+                msg: "El nombre del producto es requerido"
             },
-            noSpecialCharacters(value) {
-                const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-                if (specialCharacters.test(value)) {
-                  throw new Error('Este campo no puede contener caracteres especiales');
+            customValidate(value) {
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('El nombre del producto debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
-            },
-            noNumbers(value) {
-                if (/[0-9]/.test(value)) {
-                    throw new Error('Este campo no puede contener números');
-                } 
             }
         }
     },
-    Precio: {
+
+    Price_Product: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         validate: {
-            notNull: {
-                msg: 'El precio es requerido'
-            },
-            isDecimal: {
-                args: [true],
-                msg: 'El precio debe ser un valor decimal'
-            },
-            min: {
-                args: [50.00],
-                msg: 'El precio debe ser al menos 50.00'
+            notNull:{
+                msg: "El precio del producto es requerido"
+            }, 
+            isInt: true
+        },
+    },
+
+    Image: {
+        type: DataTypes.BLOB,
+        allowNull: false,
+        validate:{
+            notNull:{
+                msg: "La imagen es requerida"
             }
         }
     },
-    Estado: {
+
+    State: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
         defaultValue: true,
+        allowNull: false,
         validate: {
             notNull: {
-                msg: 'El estado es requerida'
+                msg: 'El estado es requerido'
             }
         }
     }
@@ -61,22 +61,22 @@ export const product = sequelize.define('PRODUCTOS', {
     timestamps: false
 });
 
-product.hasMany(recipe, {
-    foreignKey: 'Productos_ID',
-    sourceKey: 'ID_PRODUCTO'
+product.hasMany(productDetail, {
+    foreignKey: 'Product_ID',
+    sourceKey: 'ID_Product'
 })
 
-recipe.belongsTo(product, {
-    foreignKey: 'Productos_ID',
-    targetId: 'ID_PRODUCTO'
+productDetail.belongsTo(product, {
+    foreignKey: 'Product_ID',
+    targetKey: 'ID_Product'
 })
 
-product.hasMany(detail_sale, {
-    foreignKey: 'Productos_ID',
-    sourceKey: 'ID_PRODUCTO'
+product.hasMany(shoppingDetail, {
+    foreignKey: 'Product_ID',
+    sourceKey: 'ID_Product'
 })
 
-detail_sale.belongsTo(product, {
-    foreignKey: 'Productos_ID',
-    targetId: 'ID_PRODUCTO'
+shoppingDetail.belongsTo(product, {
+    foreignKey: 'Product_ID',
+    targetKey: 'ID_Product'
 })
