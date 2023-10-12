@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { login } from './Login.model.js'
+import { typeUser } from './TypeUser.model.js'
 import { shopping } from './Shopping.model.js'
 import { sale } from './Sale.model.js'
 
@@ -74,18 +74,26 @@ export const user = sequelize.define('Users', {
         }
     },
 
-    Type_User: {
-        type: DataTypes.STRING(15),
+    Email: {
+        type: DataTypes.STRING(80),
         allowNull: false, 
-        validate:{
-            notNull:{
-                msg: "El tipo es requerido"
-            }, 
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
+        unique: true,
+        validate: {
+            notNull: {
+                msg: 'El correo es requerido'
+            },
+            isEmail: {
+                msg: 'El correo electrónico debe ser válido y contener el símbolo "@"'
+            }
+        }
+    }, 
+
+    Password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'La contraseña es requerida'
             }
         }
     },
@@ -116,14 +124,14 @@ export const user = sequelize.define('Users', {
     timestamps: false
 });
 
-user.hasMany(login, {
-    foreignKey: 'User_ID',
-    sourceKey: 'ID_User'
+user.hasMany(typeUser, {
+    foreignKey: 'TypeUser_ID',
+    sourceKey: 'ID_TypeUser'
 })
 
-login.belongsTo(user, {
-    foreignKey: 'User_ID',
-    targetKey: 'ID_User'
+typeUser.belongsTo(user, {
+    foreignKey: 'TypeUser_ID',
+    targetKey: 'ID_TypeUser'
 })
 
 user.hasMany(shopping, {
