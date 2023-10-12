@@ -44,16 +44,6 @@ export const category =  sequelize.define('Categorys', {
         }
     },
 
-    Image: {
-        type: DataTypes.BLOB,
-        allowNull: false,
-        validate:{
-            notNull:{
-                msg: "La imagen es requerida"
-            }
-        }
-    },
-
     State: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

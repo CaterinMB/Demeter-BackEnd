@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
 import { productDetail } from './ProductDetail.model.js'
-import { shoppingDetail } from './ShoppingDetail.model.js'
+import { saleDetail } from './SaleDetail.model.js'
 
 export const product =  sequelize.define('Products', {
 
@@ -37,16 +37,6 @@ export const product =  sequelize.define('Products', {
         },
     },
 
-    Image: {
-        type: DataTypes.BLOB,
-        allowNull: false,
-        validate:{
-            notNull:{
-                msg: "La imagen es requerida"
-            }
-        }
-    },
-
     State: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
@@ -71,12 +61,12 @@ productDetail.belongsTo(product, {
     targetKey: 'ID_Product'
 })
 
-product.hasMany(shoppingDetail, {
+product.hasMany(saleDetail, {
     foreignKey: 'Product_ID',
     sourceKey: 'ID_Product'
 })
 
-shoppingDetail.belongsTo(product, {
+saleDetail.belongsTo(product, {
     foreignKey: 'Product_ID',
     targetKey: 'ID_Product'
 })
