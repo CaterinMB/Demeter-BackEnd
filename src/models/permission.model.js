@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { roleDetail } from './RoleDetail.model.js';
+import { roleDetail } from './roledetail.model.js';
 
 export const permission = sequelize.define('Permissions', {
 

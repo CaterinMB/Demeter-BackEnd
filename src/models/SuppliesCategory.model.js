@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { supplies } from './Supplies.model.js'
+import { supplies } from './supplies.model.js'
 
 export const suppliesCategory =  sequelize.define('SuppliesCategorys', {
 
