@@ -6,10 +6,10 @@ import './models/RoleDetail.model.js'
 import './models/Role.model.js'
 import './models/User.model.js'
 import './models/TypeUser.model.js'
-import './models/Supplier.model.js'
+import './models/supplier.model.js'
 import './models/SuppliesCategory.model.js'
 import './models/ProductCategory.model.js'
-import './models/Supplies.model.js'
+import './models/supplies.model.js'
 import './models/Product.model.js'
 import './models/ProductDetail.model.js'
 import './models/Shopping.model.js'
@@ -19,7 +19,7 @@ import './models/SaleDetail.model.js'
 
 async function main() {
     try{
-        await sequelize.sync({force: false})
+        await sequelize.sync({force: true})
         app.listen(4080);
         console.log('Server on port ', 4080);
     } catch (error) {
