@@ -37,6 +37,16 @@ export const product =  sequelize.define('Products', {
         },
     },
 
+    Image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
+    },
+
     State: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
