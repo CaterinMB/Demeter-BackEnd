@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { typeUser } from './TypeUser.model.js'
-import { shopping } from './Shopping.model.js'
-import { sale } from './Sale.model.js'
+import { typeUser } from './typeuser.model.js'
+import { shopping } from './shopping.model.js'
+import { sale } from './sale.model.js'
 
 export const user = sequelize.define('Users', {
 

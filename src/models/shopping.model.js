@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { shoppingDetail } from './ShoppingDetail.model.js'
+import { shoppingDetail } from './shoppingdetail.model.js'
 
 export const shopping = sequelize.define('Shoppings', {
 
