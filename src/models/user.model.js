@@ -125,13 +125,13 @@ export const user = sequelize.define('Users', {
 });
 
 user.hasMany(typeUser, {
-    foreignKey: 'TypeUser_ID',
-    sourceKey: 'ID_TypeUser'
+    foreignKey: 'User_ID',
+    sourceKey: 'ID_User'
 })
 
 typeUser.belongsTo(user, {
-    foreignKey: 'TypeUser_ID',
-    targetKey: 'ID_TypeUser'
+    foreignKey: 'User_ID',
+    targetKey: 'ID_User'
 })
 
 user.hasMany(shopping, {

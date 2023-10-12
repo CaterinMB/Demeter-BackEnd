@@ -40,12 +40,12 @@ export const suppliesCategory =  sequelize.define('SuppliesCategorys', {
     timestamps: false
 });
 
-category.hasMany(supplies, {
-    foreignKey: 'Category_ID',
-    sourceKey: 'ID_Category'
+suppliesCategory.hasMany(supplies, {
+    foreignKey: 'SuppliesCategory_ID',
+    sourceKey: 'ID_SuppliesCategory'
 })
 
-supplies.belongsTo(category, {
-    foreignKey: 'Category_ID',
-    targetKey: 'ID_Category'
+supplies.belongsTo(suppliesCategory, {
+    foreignKey: 'SuppliesCategory_ID',
+    targetKey: 'ID_SuppliesCategory'
 })
