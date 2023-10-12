@@ -17,15 +17,10 @@ export const supplier = sequelize.define('Suppliers', {
             notNull:{
                 msg: "El tipo de documento es requerido"
             }, 
-            noSpecialCharacters(value) {
-                const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-                if (specialCharacters.test(value)) {
-                    throw new Error('Este campo no puede contener caracteres especiales');
-                }
-            },
-            noNumbers(value) {
-                if (/[0-9]/.test(value)) {
-                    throw new Error('Este campo no puede contener números');
+            customValidate(value) {
+                
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
             }
         }
@@ -40,8 +35,8 @@ export const supplier = sequelize.define('Suppliers', {
                 msg: 'El documento es requerido'
             },
             len: {
-                args: [8, 10],
-                msg: 'El campo de número de identificacion debe ser mayor de 8 y menos de 10.'
+                args: [6, 10],
+                msg: 'El campo de número de identificacion debe ser mayor de 6 y menos de 10.'
             },
             isNumeric: {
                 msg: 'El campo de número de identificacion debe contener solo números'
@@ -62,15 +57,28 @@ export const supplier = sequelize.define('Suppliers', {
             notNull: {
                 msg: 'El nombre es requerido'
             },
-            noSpecialCharacters(value) {
-                const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-                if (specialCharacters.test(value)) {
-                    throw new Error('Este campo no puede contener caracteres especiales');
+            customValidate(value) {
+                if (!/^[A-Za-z\s()]+$/.test(value)) {
+                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
                 }
             },
-            noNumbers(value) {
-                if (/[0-9]/.test(value)) {
-                    throw new Error('Este campo no puede contener números');
+            len: {
+                args: [5, 50],
+                msg: 'El nombre debe tener de 5 a 50 caracteres.'
+            }
+        }
+    },
+
+    Name_Business : {
+        type: DataTypes.STRING(50), 
+        allowNull: false, 
+        validate: {
+            notNull: {
+                msg: 'El nombre es requerido'
+            },
+            customValidate(value) {
+                if (!/^[A-Za-z\s()]+$/.test(value)) {
+                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
                 }
             },
             len: {
