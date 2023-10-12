@@ -76,30 +76,34 @@ export const user = sequelize.define('Users', {
 
     Email: {
         type: DataTypes.STRING(80),
-        allowNull: false, 
+        allowNull: true, 
         unique: true,
-        validate: {
-            notNull: {
-                msg: 'El correo es requerido'
-            },
-            isEmail: {
-                msg: 'El correo electrónico debe ser válido y contener el símbolo "@"'
+        validate:{
+            customValidate(value) {
+                
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                }
             }
         }
     }, 
 
     Password: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'La contraseña es requerida'
+        allowNull: true, 
+        validate:{
+            customValidate(value) {
+                
+                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                }
             }
         }
     },
 
     Restaurant: {
-        type: DataTypes.STRING(15), 
+        type: DataTypes.STRING(15),
+        allowNull: true,
         validate:{
             customValidate(value) {
                 
