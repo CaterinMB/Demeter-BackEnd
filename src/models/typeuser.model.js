@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
+import { user } from './user.model.js'
 
 export const typeUser = sequelize.define('TypeUsers', {
 
@@ -27,3 +28,13 @@ export const typeUser = sequelize.define('TypeUsers', {
 }, {
     timestamps: false
 });
+
+typeUser.hasMany(user, {
+    foreignKey: 'TypeUser_ID',
+    sourceKey: 'ID_TypeUser'
+})
+
+user.belongsTo(typeUser, {
+    foreignKey: 'TypeUser_ID',
+    targetKey: 'ID_TypeUser'
+})
