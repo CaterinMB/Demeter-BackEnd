@@ -1,4 +1,5 @@
 import { role } from '../models/role.model.js';
+import { typeUser } from '../models/typeuser.model.js'
 import { Op } from 'sequelize';
 
 export const getRoles = async (req, res) => {
@@ -108,6 +109,17 @@ export const deleteRole = async (req, res) => {
         await role.destroy({
             where: { ID_Role: id, }
         });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+// -------------------------------- Type User -------------------------------- //
+
+export const getTypeUsers = async (req, res) => {
+    try {
+        const typeUsers = await typeUser.findAll()
+        res.json(typeUsers);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
