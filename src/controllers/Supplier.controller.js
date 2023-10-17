@@ -1,4 +1,4 @@
-import {supplier} from  '../models/supplier.model.js'
+import {supplier} from '../models/supplier.model.js'
 
 export const getSupplier = async (req, res) => {
     try {
@@ -25,16 +25,17 @@ export const getSupplie = async (req, res) => {
 
 export const createSupplier = async (req, res) => {
     try {
-        const { Type_Document, Document, Name_Business, Name_Supplier, Phone, Email, City, State } = req.body;
+        const { ID_Supplier, Type_Document, Document, Name_Business, Name_Supplier, Phone, Email, City, State } = req.body;
 
         const createSupplier = await supplier.create({
+            ID_Supplier,
             Type_Document,
             Document,
-            Name_Business,
             Name_Supplier,
+            Name_Business,
             Phone,
-            City,
             Email, 
+            City,
             State
         });
 

@@ -1,4 +1,4 @@
-import {shopping} from '../models/Shopping.model.js'
+import {shopping} from '../models/shopping.model.js'
 
 export const getShopping = async (req, res) => {
     try {
@@ -25,9 +25,10 @@ export const getShop = async (req, res) => {
 
 export const createShopping = async (req, res) => {
     try {
-        const { Datetime, ID_Supplier, Total, State, User_ID } = req.body;
+        const { ID_Shopping, Datetime, ID_Supplier, Total, State, User_ID } = req.body;
 
         const createShopping = await shopping.create({
+         ID_Shopping,	
          Datetime, 
          Total,
          User_ID, 
@@ -63,7 +64,7 @@ export const disableShop = async (req, res) => {
     }
 };
 
-export const updatedShopping = async (req, res) => { 
+export const updateShopping = async (req, res) => { 
     const { id } = req.params;
     try {
         const updateShop = await shopping.findOne({
