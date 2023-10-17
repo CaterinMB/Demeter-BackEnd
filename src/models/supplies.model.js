@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { productDetail } from './ProductDetail.model.js'
-import { shoppingDetail } from './ShoppingDetail.model.js'
+import { productDetail } from './productdetail.model.js'
+import { shoppingDetail } from './shoppingdetail.model.js'
 
 export const supplies =  sequelize.define('Supplies', {
 
@@ -70,6 +70,16 @@ export const supplies =  sequelize.define('Supplies', {
             min: 0,
             max: 9999
         },
+    },
+    
+    Image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     },
 
     State: {

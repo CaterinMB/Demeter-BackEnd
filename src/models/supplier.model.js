@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { shopping } from './Shopping.model.js'
+import { shopping } from './shopping.model.js'
 
 export const supplier = sequelize.define('Suppliers', {
 
@@ -71,11 +71,8 @@ export const supplier = sequelize.define('Suppliers', {
 
     Name_Business : {
         type: DataTypes.STRING(50), 
-        allowNull: false, 
+        allowNull: true, 
         validate: {
-            notNull: {
-                msg: 'El nombre es requerido'
-            },
             customValidate(value) {
                 if (!/^[A-Za-z\s()]+$/.test(value)) {
                     throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');

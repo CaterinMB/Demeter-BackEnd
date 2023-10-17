@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { productDetail } from './ProductDetail.model.js'
-import { saleDetail } from './SaleDetail.model.js'
+import { productDetail } from './productdetail.model.js'
+import { saleDetail } from './saledetail.model.js'
 
 export const product =  sequelize.define('Products', {
 
@@ -35,6 +35,16 @@ export const product =  sequelize.define('Products', {
             }, 
             isInt: true
         },
+    },
+
+    Image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     },
 
     State: {
