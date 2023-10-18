@@ -59,11 +59,11 @@ export const createUser = async (req, res) => {
             Document,
             Name_User,
             LastName_User,
-            Role_ID,
             Email,
             Password: passwordHast,
-            TypeUser_ID,
             Restaurant,
+            TypeUser_ID,
+            Role_ID,
             State: true
         });
 

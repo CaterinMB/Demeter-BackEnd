@@ -1,27 +1,26 @@
-import { role } from '../models/role.model.js';
-import { typeUser } from '../models/typeuser.model.js'
+import { product } from '../models/product.model.js';
 import { Op } from 'sequelize';
 
-export const getRoles = async (req, res) => {
+export const getProducts = async (req, res) => {
     try {
-        const roles = await role.findAll()
-        res.json(roles);
+        const products = await product.findAll()
+        res.json(products);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
-export const getRole = async (req, res) => {
+export const getProduct = async (req, res) => {
     const { id } = req.params
     
     try {
-        const getRole = await role.findOne({
-            where: { ID_Role: id }
+        const getProduct = await product.findOne({
+            where: { ID_Product: id }
         })
 
-        if (!getRole) return res.status(404).json({ message: 'El rol no existe.' })
+        if (!getProduct) return res.status(404).json({ message: 'El rol no existe.' })
 
-        res.json(getRole);
+        res.json(getProduct);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -29,15 +28,15 @@ export const getRole = async (req, res) => {
 
 export const checkForDuplicates = async (req, res, next) => {
     try {
-        const { Name_Role } = req.body;
+        const { Name_Products } = req.body;
 
-        const existingRole = await role.findOne({
+        const existingProduct = await product.findOne({
             where: {
-                [Op.or]: [{ Name_Role }],
+                [Op.or]: [{ Name_Products }],
             },
         });
 
-        if (existingRole) {
+        if (existingProduct) {
             return res.status(400).json({
                 error: 'Ya existe un rol con el mismo nombre.',
             });
@@ -49,12 +48,12 @@ export const checkForDuplicates = async (req, res, next) => {
     }
 };
 
-export const createRoles = async (req, res) => {
-    const { Name_Role } = req.body;
+export const createProducts = async (req, res) => {
+    const { Name_Products } = req.body;
 
     try {
-        const newRole = await role.create({
-            Name_Role,
+        const newRole = await product.create({
+            Name_Products,
             State: true
         })
 
@@ -64,14 +63,14 @@ export const createRoles = async (req, res) => {
     }
 };
 
-export const updateRole = async (req, res) => {
+export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params
-        const { Name_Role } = req.body
+        const { Name_Products } = req.body
 
-        const updateRole = await role.findByPk(id)
+        const updateRole = await product.findByPk(id)
 
-        updateRole.Name_Role = Name_Role
+        updateRole.Name_Products = Name_Products
 
         await updateRole.save()
 
@@ -81,12 +80,12 @@ export const updateRole = async (req, res) => {
     }
 };
 
-export const toggleRoleStatus = async (req, res) => {
+export const toggleProductStatus = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const statusRole = await role.findOne({
-            where: { ID_Role: id },
+        const statusRole = await product.findOne({
+            where: { ID_Product: id },
         });
 
         if (!statusRole) {
@@ -103,24 +102,13 @@ export const toggleRoleStatus = async (req, res) => {
     }
 };
 
-export const deleteRole = async (req, res) => {
+export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params
 
-        await role.destroy({
-            where: { ID_Role: id, }
+        await product.destroy({
+            where: { ID_Product: id, }
         });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-// -------------------------------- Type User -------------------------------- //
-
-export const getTypeUsers = async (req, res) => {
-    try {
-        const typeUsers = await typeUser.findAll()
-        res.json(typeUsers);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
