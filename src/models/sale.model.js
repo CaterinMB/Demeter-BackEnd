@@ -45,6 +45,7 @@ export const sale = sequelize.define('Sales', {
     Discount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+        defaultValue: 0.0,
         validate: {
             notNull:{
                 msg: "El descuento es requerido"
@@ -55,6 +56,7 @@ export const sale = sequelize.define('Sales', {
     SubTotal: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+        defaultValue: 0,
         validate: {
             notNull:{
                 msg: "El subtotal es requerido"
@@ -65,6 +67,7 @@ export const sale = sequelize.define('Sales', {
     Total: {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false,
+        defaultValue: 0,
         validate: {
             notNull:{
                 msg: "El precio del producto es requerido"
@@ -75,11 +78,8 @@ export const sale = sequelize.define('Sales', {
 
     Payment: {
         type: DataTypes.STRING(30),
-        allowNull: false, 
+        allowNull: true, 
         validate: {
-            notNull:{
-                msg: "El metodo de pago es requerido"
-            }, 
             customValidate(value) {
                 if (!/^[A-Za-z\s()]+$/.test(value)) {
                     throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');

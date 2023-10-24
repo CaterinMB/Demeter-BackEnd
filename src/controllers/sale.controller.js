@@ -10,3 +10,17 @@ export const getSale = async (req, res) => {
     }
 };
 
+
+export const createSale = async(req, res) => {
+
+    
+try {
+    const newSale = await sale.create({  
+       
+    })
+
+    res.json(newSale)
+} catch (error) {
+    return res.status(500).json({ message: error.message });
+}
+}
