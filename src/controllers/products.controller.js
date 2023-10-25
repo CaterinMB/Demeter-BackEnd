@@ -21,3 +21,13 @@ export const getProduct = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+
+export const getAllProduct = async (req, res) => {
+    try {
+        const products = await product.findAll()
+        res.json(products);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};

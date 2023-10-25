@@ -6,6 +6,7 @@ import cors from 'cors';
 import RoutesSale from './routes/sale.routes.js';
 import RoutesProductCategories from './routes/productCategories.routes.js';
 import RoutesProducts from './routes/product.routes.js'
+import RoutesSaleDetail from './routes/saledetail.routes.js'
 
 const app = express();
 
@@ -22,6 +23,6 @@ app.use(cookieParser());
 app.use(RoutesSale);
 app.use(RoutesProductCategories);
 app.use(RoutesProducts);
-
+app.use(RoutesSaleDetail);
 
 export default app;

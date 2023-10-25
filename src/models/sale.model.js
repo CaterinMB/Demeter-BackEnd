@@ -21,16 +21,6 @@ export const sale = sequelize.define('Sales', {
         }
     },
 
-    Datetime: {
-        type: DataTypes.DATE, 
-        allowNull: false,
-        validate: {
-            notNull:{
-                msg: "La fecha es requerido"
-            }
-        }
-    },
-
     QuickSale: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
