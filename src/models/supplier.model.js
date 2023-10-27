@@ -72,6 +72,7 @@ export const supplier = sequelize.define('Suppliers', {
     Name_Business : {
         type: DataTypes.STRING(50), 
         allowNull: true, 
+        unique: true,
         validate: {
             customValidate(value) {
                 if (!/^[A-Za-z\s()]+$/.test(value)) {
@@ -86,7 +87,7 @@ export const supplier = sequelize.define('Suppliers', {
     },
 
     Phone: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.BIGINT(12), 
         allowNull: false,
         unique: true,
         validate: {
@@ -94,14 +95,14 @@ export const supplier = sequelize.define('Suppliers', {
                 msg: 'El telefono es requerido'
             },
             len: {
-                args: [7, 10],
+                args: [7, 12],
                 msg: 'El campo de número de identificacion debe ser mayor de 7 y menos de 10.'
             },
             isNumeric: {
                 msg: 'El campo de número de identificacion debe contener solo números'
             },
             isValidFormat(value) {
-                const numericRegex = /^[0-9]+$/;
+                const numericRegex = /^[0-10]+$/;
                 if (!numericRegex.test(value.toString())) {
                     throw new Error('El campo de número de identificacion debe contener solo números');
                 }

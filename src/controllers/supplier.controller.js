@@ -25,7 +25,7 @@ export const getSupplie = async (req, res) => {
 
 export const createSupplier = async (req, res) => {
     try {
-        const { Type_Document, Document, Name_Business, Name_Supplier, Phone, Email, City, State } = req.body;
+        const { Type_Document, Document, Name_Business, Name_Supplier, Phone, Email, City } = req.body;
 
         const createSupplier = await supplier.create({
             Type_Document,
