@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(routesRole);
-app.use(routesUser);
 app.use(routesType);
+app.use(routesUser);
 
 export default app;
