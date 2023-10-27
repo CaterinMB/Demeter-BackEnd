@@ -53,7 +53,6 @@ export const createUser = async (req, res) => {
 
     try {
         const passwordHast = await bcrypt.hash(Password, 10)
-
         const newUser = await user.create({
             Type_Document,
             Document,

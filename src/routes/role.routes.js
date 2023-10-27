@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { getRoles, getRole, checkForDuplicates, createRoles, updateRole, toggleRoleStatus, deleteRole, getTypeUsers } from '../controllers/role.controller.js';
-import { authRequired } from '../middlewares/validateToken.js'
+import { getRoles, getRole, checkForDuplicates, createRoles, updateRole, toggleRoleStatus, deleteRole,  } from '../controllers/role.controller.js';
 
 const router = Router();
 
@@ -10,8 +9,5 @@ router.post('/add_role', checkForDuplicates, createRoles);
 router.put('/role/:id', updateRole);
 router.put('/role/toggle/:id', toggleRoleStatus);
 router.delete('/role/:id', deleteRole);
-
-// -------------------------------- Type User -------------------------------- //
-router.get('/type_user', getTypeUsers);
 
 export default router;
