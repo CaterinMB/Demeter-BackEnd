@@ -16,7 +16,7 @@ import './models/saledetail.model.js'
 
 async function main() {
     try{
-        await sequelize.sync({force: true})
+        await sequelize.sync({force: false})
         app.listen(4080);
         console.log('Server on port ', 4080);
     } catch (error) {
