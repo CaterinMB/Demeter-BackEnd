@@ -71,16 +71,6 @@ export const supplies =  sequelize.define('Supplies', {
             max: 9999
         },
     },
-    
-    Image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El estado es requerido'
-            }
-        }
-    },
 
     State: {
         type: DataTypes.BOOLEAN,
