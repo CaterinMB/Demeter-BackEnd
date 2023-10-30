@@ -25,6 +25,17 @@ export const role =  sequelize.define('Roles', {
                 }
             }
         }
+    },
+
+    State: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false

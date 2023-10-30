@@ -2,9 +2,11 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+
 import category_suppliesRoutes from './routes/suppliescategory.routes.js';
 import category_productsRoutes from './routes/productcategory.routes.js'
 import suppliesRoutes from '../src/routes/supplies.routes.js';
+
 
 const app = express();
 
