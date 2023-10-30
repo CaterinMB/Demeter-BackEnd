@@ -17,36 +17,18 @@ export const supplier = sequelize.define('Suppliers', {
             notNull:{
                 msg: "El tipo de documento es requerido"
             }, 
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
-            }
+            
         }
     },
 
     Document: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING(10), 
         allowNull: false, 
         unique: true,
         validate: {
             notNull: {
                 msg: 'El documento es requerido'
-            },
-            len: {
-                args: [6, 10],
-                msg: 'El campo de número de identificacion debe ser mayor de 6 y menos de 10.'
-            },
-            isNumeric: {
-                msg: 'El campo de número de identificacion debe contener solo números'
-            },
-            isValidFormat(value) {
-                const numericRegex = /^[0-9]+$/;
-                if (!numericRegex.test(value.toString())) {
-                    throw new Error('El campo de número de identificacion debe contener solo números');
-                }
-            }
+            },   
         }
     },
 
@@ -57,11 +39,7 @@ export const supplier = sequelize.define('Suppliers', {
             notNull: {
                 msg: 'El nombre es requerido'
             },
-            customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
-                }
-            },
+           
             len: {
                 args: [5, 50],
                 msg: 'El nombre debe tener de 5 a 50 caracteres.'
@@ -72,12 +50,9 @@ export const supplier = sequelize.define('Suppliers', {
     Name_Business : {
         type: DataTypes.STRING(50), 
         allowNull: true, 
+        unique: true,
         validate: {
-            customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
-                }
-            },
+            
             len: {
                 args: [5, 50],
                 msg: 'El nombre debe tener de 5 a 50 caracteres.'
@@ -86,27 +61,10 @@ export const supplier = sequelize.define('Suppliers', {
     },
 
     Phone: {
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING(12), 
         allowNull: false,
         unique: true,
-        validate: {
-            notNull: {
-                msg: 'El telefono es requerido'
-            },
-            len: {
-                args: [7, 10],
-                msg: 'El campo de número de identificacion debe ser mayor de 7 y menos de 10.'
-            },
-            isNumeric: {
-                msg: 'El campo de número de identificacion debe contener solo números'
-            },
-            isValidFormat(value) {
-                const numericRegex = /^[0-9]+$/;
-                if (!numericRegex.test(value.toString())) {
-                    throw new Error('El campo de número de identificacion debe contener solo números');
-                }
-            }
-        }
+        
     },
 
     Email: {
@@ -130,12 +88,6 @@ export const supplier = sequelize.define('Suppliers', {
             notNull: {
                 msg: 'La ciudad es requerido'
             },
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
-            }
         }
     },
 

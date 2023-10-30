@@ -8,6 +8,9 @@ import category_productsRoutes from './routes/productcategory.routes.js'
 import suppliesRoutes from '../src/routes/supplies.routes.js';
 import roleRoutes from './routes/role.routes.js';
 import userRoutes from './routes/user.routes.js';
+import supplierRoutes from './routes/supplier.routes.js'
+import shoppingRoutes from './routes/shopping.routes.js'
+import shoppingdetailRoute from './routes/shopping.routes.js'
 
 
 const app = express();
@@ -21,6 +24,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(supplierRoutes)
 app.use(category_suppliesRoutes);
 app.use(category_productsRoutes);
 app.use(suppliesRoutes);

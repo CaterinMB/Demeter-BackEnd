@@ -3,11 +3,7 @@ import { sequelize } from './db/dataBase.js'
 
 import './models/permission.model.js'
 import './models/roledetail.model.js'
-import './models/supplier.model.js'
-import './models/product.model.js'
-import './models/productdetail.model.js'
-import './models/shopping.model.js'
-import './models/shoppingdetail.model.js'
+import './models/roledetail.model.js'
 import './models/sale.model.js'
 import './models/saledetail.model.js'
 
