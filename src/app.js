@@ -6,6 +6,8 @@ import cors from 'cors';
 import category_suppliesRoutes from './routes/suppliescategory.routes.js';
 import category_productsRoutes from './routes/productcategory.routes.js'
 import suppliesRoutes from '../src/routes/supplies.routes.js';
+import roleRoutes from './routes/role.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 
 const app = express();
@@ -22,5 +24,7 @@ app.use(cookieParser());
 app.use(category_suppliesRoutes);
 app.use(category_productsRoutes);
 app.use(suppliesRoutes);
+app.use(roleRoutes);
+app.use(userRoutes);
 
 export default app;
