@@ -38,7 +38,7 @@ export const checkForDuplicates = async (req, res, next) => {
 
         if (existingProduct) {
             return res.status(400).json({
-                error: 'Ya existe un rol con el mismo nombre.',
+                error: 'Ya existe un producto con el mismo nombre.',
             });
         }
 
@@ -97,6 +97,16 @@ export const toggleProductStatus = async (req, res) => {
         await statusRole.save();
 
         return res.json(statusRole);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getProductsByCategory = async (req, res) => {
+    const {id} = req.params
+    try {
+        const products = await product.findAll({where : {ProductCategory_ID: id}})
+        res.json(products);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

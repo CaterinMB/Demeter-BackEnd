@@ -64,6 +64,7 @@ export const createUser = async (req, res) => {
             LastName_User,
             Email,
             Password: passwordHast,
+            Restaurant: null,
             TypeUser_ID: 1,
             Role_ID,
             State: true
@@ -167,6 +168,9 @@ export const createWaiter = async (req, res) => {
             LastName_User,
             Restaurant,
             TypeUser_ID: 2,
+            Email: null,
+            Password: null,
+            Role_ID: null,
             State: true
         });
 

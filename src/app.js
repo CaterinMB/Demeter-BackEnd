@@ -5,7 +5,6 @@ import cors from 'cors';
 
 import routesRole from './routes/role.routes.js';
 import routesUser from './routes/user.routes.js';
-import routesType from './routes/type.routes.js';
 
 const app = express();
 
@@ -19,7 +18,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(routesRole);
-app.use(routesType);
 app.use(routesUser);
 
 export default app;
