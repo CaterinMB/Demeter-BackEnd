@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { typeUser } from './typeuser.model.js'
 import { shopping } from './shopping.model.js'
 import { sale } from './sale.model.js'
 
@@ -127,16 +126,6 @@ export const user = sequelize.define('Users', {
 }, {
     timestamps: false
 });
-
-user.hasMany(typeUser, {
-    foreignKey: 'User_ID',
-    sourceKey: 'ID_User'
-})
-
-typeUser.belongsTo(user, {
-    foreignKey: 'User_ID',
-    targetKey: 'ID_User'
-})
 
 user.hasMany(shopping, {
     foreignKey: 'User_ID',

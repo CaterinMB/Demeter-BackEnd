@@ -15,7 +15,7 @@ export const shopping = sequelize.define('Shoppings', {
         allowNull: false,
         validate: {
             notNull:{
-                msg: "El precio del producto es requerido"
+                msg: "La fech de la compra es requerido"
             }
         }
     },
@@ -25,7 +25,7 @@ export const shopping = sequelize.define('Shoppings', {
         allowNull: false,
         validate: {
             notNull:{
-                msg: "El precio del producto es requerido"
+                msg: "El total de la compra es requerido"
             }, 
             isInt: true
         }
