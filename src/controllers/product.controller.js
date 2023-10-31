@@ -48,16 +48,16 @@ export const checkForDuplicates = async (req, res, next) => {
     }
 };
 
-export const createProducts = async (req, res) => {
+export const createProduct = async (req, res) => {
     const { Name_Products } = req.body;
 
     try {
-        const newRole = await product.create({
+        const newProduct = await product.create({
             Name_Products,
             State: true
         })
 
-        res.json(newRole);
+        res.json(newProduct);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -68,13 +68,13 @@ export const updateProduct = async (req, res) => {
         const { id } = req.params
         const { Name_Products } = req.body
 
-        const updateRole = await product.findByPk(id)
+        const updateProduct = await product.findByPk(id)
 
-        updateRole.Name_Products = Name_Products
+        updateProduct.Name_Products = Name_Products
 
-        await updateRole.save()
+        await updateProduct.save()
 
-        res.json(updateRole);
+        res.json(updateProduct);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -84,19 +84,19 @@ export const toggleProductStatus = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const statusRole = await product.findOne({
+        const statusProduct = await product.findOne({
             where: { ID_Product: id },
         });
 
-        if (!statusRole) {
+        if (!statusProduct) {
             return res.status(404).json({ message: 'Rol no encontrado' });
         };
 
-        statusRole.State = !statusRole.State;
+        statusProduct.State = !statusProduct.State;
 
-        await statusRole.save();
+        await statusProduct.save();
 
-        return res.json(statusRole);
+        return res.json(statusProduct);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
