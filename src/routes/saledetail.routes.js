@@ -8,6 +8,4 @@ router.post('/CManyDetails', createManyDetails);
 router.get('/details/:id', getDetails);
 router.put('/update',lotUpd )
 
-
-
 export default router;
