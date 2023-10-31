@@ -155,5 +155,6 @@ user.hasMany(sale, {
 
 sale.belongsTo(user, {
     foreignKey: 'User_ID',
-    targetKey: 'ID_User'
+    targetKey: 'ID_User',
+    defaultValue: 0,
 })

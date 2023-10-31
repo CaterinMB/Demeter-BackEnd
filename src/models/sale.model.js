@@ -94,10 +94,10 @@ export const sale = sequelize.define('Sales', {
 
 sale.hasMany(saleDetail, {
     foreignKey: 'Sale_ID',
-    sourceKey: 'ID_Sale'
+    sourceKey: 'ID_Sale',
 })
 
 saleDetail.belongsTo(sale, {
     foreignKey: 'Sale_ID',
-    targetKey: 'ID_Sale'
+    targetKey: 'ID_Sale',
 })

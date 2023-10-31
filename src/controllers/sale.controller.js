@@ -10,12 +10,27 @@ export const getSale = async (req, res) => {
     }
 };
 
+export const getOneSale = async (req, res) => {
+    const {ID_Sale} = req.params
+    try {
+        const Sale = await sale.findOne({where: {ID_Sale : ID_Sale}})
+        res.json(Sale);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 export const createSale = async(req, res) => {
-
+    
+    const{Total, SubTotal} = req.body
     
     try {
-    const newSale = await sale.create({  
+    const newSale = await sale.create({ 
+        
+        Total: Total,
+        SubTotal : SubTotal
        
     })
 
@@ -45,4 +60,26 @@ export const updateSale = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
+
+    
 }
+export const pay = async (req, res) => {
+    try {
+        const {ID_Sale} = req.body
+        
+        const existingSale = await sale.findByPk(ID_Sale);
+
+        if (!existingSale) {
+            return res.status(404).json({ message: 'Venta no encontrada' });
+        }
+
+        existingSale.StatePay = false;
+       
+        await existingSale.save();
+
+        res.json(existingSale);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+

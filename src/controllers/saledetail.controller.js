@@ -25,3 +25,35 @@ export const getDetails = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const createManyDetails = async (req, res) => {
+
+    const newdetails = req.body
+
+    try {
+        const details = await saleDetail.bulkCreate(newdetails)
+        res.json(details);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const lotUpd = async (req, res) => {
+    try {
+        const {ID_SaleDetail, math} = req.body
+        
+        const existingSale = await saleDetail.findByPk(ID_SaleDetail);
+
+        if (!existingSale) {
+            return res.status(404).json({ message: 'Venta no encontrada' });
+        }
+
+        existingSale.lot + math
+       
+        await existingSale.save();
+
+        res.json(existingSale);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
