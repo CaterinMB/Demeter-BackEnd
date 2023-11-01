@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { roleDetail } from './roledetail.model.js'
 import { user } from './user.model.js'
 
 export const role =  sequelize.define('Roles', {
@@ -25,20 +24,21 @@ export const role =  sequelize.define('Roles', {
                 }
             }
         }
+    },
+
+    State: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'El estado es requerido'
+            }
+        }
     }
 }, {
     timestamps: false
 });
-
-role.hasMany(roleDetail, {
-    foreignKey: 'Role_ID',
-    sourceKey: 'ID_Role'
-})
-
-roleDetail.belongsTo(role, {
-    foreignKey: 'Role_ID',
-    targetKey: 'ID_Role'
-})
 
 role.hasMany(user, {
     foreignKey: 'Role_ID',

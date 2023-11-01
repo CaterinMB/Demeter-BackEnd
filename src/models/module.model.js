@@ -1,29 +1,41 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
+import { permissionModule } from './permissionModule.model.js'
 
-export const typeUser = sequelize.define('TypeUsers', {
+export const module = sequelize.define('Modules', {
 
-    ID_TypeUser: {
+    ID_Module: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    }, 
+    },
 
-    Name_Type : {
-        type: DataTypes.STRING(15), 
-        allowNull: false, 
+    Name_Module: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
         validate: {
             notNull: {
-                msg: 'El tipo de usuario es requerido'
+                msg: "El nombre es requerido"
             },
             customValidate(value) {
-                
+
                 if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
                     throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
             }
         }
-    }
+    },
+
 }, {
     timestamps: false
 });
+
+module.hasMany(permissionModule, {
+    foreignKey: 'Module_ID',
+    sourceKey: 'ID_Module'
+})
+
+permissionModule.belongsTo(module, {
+    foreignKey: 'Module_ID',
+    targetKey: 'ID_Module'
+})

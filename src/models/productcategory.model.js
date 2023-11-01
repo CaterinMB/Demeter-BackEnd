@@ -1,16 +1,16 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { supplies } from './supplies.model.js'
+import { product } from './product.model.js'
 
-export const suppliesCategory =  sequelize.define('SuppliesCategorys', {
+export const productCategory =  sequelize.define('ProductCategorys', {
 
-    ID_SuppliesCategory: {
+    ID_ProductCategory: {
         type: DataTypes.INTEGER,
         primaryKey: true, 
         autoIncrement: true 
     }, 
 
-    Name_SuppliesCategory: {
+    Name_ProductCategory: {
         type: DataTypes.STRING(30), 
         allowNull: false, 
         validate:{
@@ -22,16 +22,6 @@ export const suppliesCategory =  sequelize.define('SuppliesCategorys', {
                 if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
                     throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
-            }
-        }
-    },
-
-    Image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El estado es requerido'
             }
         }
     },
@@ -50,12 +40,12 @@ export const suppliesCategory =  sequelize.define('SuppliesCategorys', {
     timestamps: false
 });
 
-suppliesCategory.hasMany(supplies, {
-    foreignKey: 'SuppliesCategory_ID',
-    sourceKey: 'ID_SuppliesCategory'
+productCategory.hasMany(product, {
+    foreignKey: 'ProductCategory_ID',
+    sourceKey: 'ID_ProductCategory'
 })
 
-supplies.belongsTo(suppliesCategory, {
-    foreignKey: 'SuppliesCategory_ID',
-    targetKey: 'ID_SuppliesCategory'
+product.belongsTo(productCategory, {
+    foreignKey: 'ProductCategory_ID',
+    targetKey: 'ID_ProductCategory'
 })
