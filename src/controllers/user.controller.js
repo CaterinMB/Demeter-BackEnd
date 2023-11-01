@@ -157,6 +157,20 @@ export const getWaiters = async (req, res) => {
     }
 };
 
+export const getWaiter = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const getUser = await user.findOne({ where: { ID_User: id } });
+
+        if (!getUser) return res.status(404).json({ message: 'El usuario no existe' })
+
+        res.json(getUser);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const createWaiter = async (req, res) => {
     const { Type_Document, Document, Name_User, LastName_User, Restaurant } = req.body;
 

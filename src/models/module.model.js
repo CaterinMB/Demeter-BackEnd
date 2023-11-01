@@ -1,41 +1,41 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { role } from './role.model.js';
+import { permissionModule } from './permissionModule.model.js'
 
-export const permission = sequelize.define('Permissions', {
+export const module = sequelize.define('Modules', {
 
-    ID_Permission: {
+    ID_Module: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    }, 
+    },
 
-    Name_Permission: {
+    Name_Module: {
         type: DataTypes.STRING(30),
-        allowNull: false, 
-        validate:{
-            notNull:{
+        allowNull: false,
+        validate: {
+            notNull: {
                 msg: "El nombre es requerido"
             },
             customValidate(value) {
-                
+
                 if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
                     throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
             }
         }
-    }
+    },
 
 }, {
     timestamps: false
 });
 
-permission.hasMany(role, {
-    foreignKey: 'Permission_ID',
-    sourceKey: 'ID_Permission'
+module.hasMany(permissionModule, {
+    foreignKey: 'Module_ID',
+    sourceKey: 'ID_Module'
 })
 
-role.belongsTo(permission, {
-    foreignKey: 'Permission_ID',
-    targetKey: 'ID_Permission'
+permissionModule.belongsTo(module, {
+    foreignKey: 'Module_ID',
+    targetKey: 'ID_Module'
 })

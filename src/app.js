@@ -25,6 +25,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(supplierRoutes)
+app.use(shoppingRoutes)
+app.use(shoppingdetailRoute)
 app.use(category_suppliesRoutes);
 app.use(category_productsRoutes);
 app.use(suppliesRoutes);
