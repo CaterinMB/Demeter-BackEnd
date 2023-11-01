@@ -58,7 +58,7 @@ export const disableSupplier = async (req, res) => {
             return res.status(404).json({ message: 'Proveedor no encontrado' });
         }
 
-        const updatedSupply = await supply.update({ Estado: !supply.Estado });
+        const updatedSupply = await supply.update({ State: !supply.State });
 
         res.json(updatedSupply);
     } catch (error) {
