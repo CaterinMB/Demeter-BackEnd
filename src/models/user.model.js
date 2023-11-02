@@ -17,12 +17,6 @@ export const user = sequelize.define('Users', {
         validate:{
             notNull:{
                 msg: "El tipo de documento es requerido"
-            }, 
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
             }
         }
     },
@@ -51,7 +45,7 @@ export const user = sequelize.define('Users', {
             customValidate(value) {
                 
                 if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                    throw new Error('Nombre: Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
             }
         }
@@ -67,7 +61,7 @@ export const user = sequelize.define('Users', {
             customValidate(value) {
                 
                 if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                    throw new Error('Apellido: Se debe comenzar con mayúscula y puede contener letras y espacios.');
                 }
             }
         }
@@ -76,41 +70,18 @@ export const user = sequelize.define('Users', {
     Email: {
         type: DataTypes.STRING(80),
         allowNull: true, 
-        unique: true,
-        validate:{
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
-            }
-        }
+        unique: true
     }, 
 
     Password: {
         type: DataTypes.STRING,
-        allowNull: true, 
-        validate:{
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
-            }
-        }
+        allowNull: true
+        
     },
 
     Restaurant: {
         type: DataTypes.STRING(15),
-        allowNull: true,
-        validate:{
-            customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
-                }
-            }
-        }
+        allowNull: true
     },
 
     State: {
