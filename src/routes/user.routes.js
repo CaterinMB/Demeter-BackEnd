@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getUsers, getUser, checkForDuplicates, createUser, updateUser, toggleUserStatus, deleteUser, getWaiters, createWaiter, duplicateWaiter } from '../controllers/user.controller.js';
+import { getUsers, getUser, checkForDuplicates, createUser, updateUser, toggleUserStatus, deleteUser } from '../controllers/user.controller.js';
+import { getWaiters, createWaiter, duplicateWaiter, getWaiter } from '../controllers/user.controller.js';
 import { authRequired } from '../middlewares/validateToken.js'
 
 const router = Router();
@@ -13,6 +14,7 @@ router.delete('/user/:id', deleteUser);
 
 // --------------------------- Mesero ------------------------------------- //
 router.get('/waiter', getWaiters);
+router.get('/waiter/:id', getWaiter);
 router.post('/add_waiter', duplicateWaiter, createWaiter);
 
 export default router;

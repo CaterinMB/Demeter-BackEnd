@@ -2,8 +2,8 @@ import app from './app.js'
 import { sequelize } from './db/dataBase.js'
 
 import './models/permission.model.js'
-import './models/roledetail.model.js'
-import './models/roledetail.model.js'
+import './models/module.model.js'
+import './models/permissionModule.model.js'
 import './models/sale.model.js'
 import './models/saledetail.model.js'
 
