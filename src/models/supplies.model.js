@@ -25,8 +25,8 @@ export const supplies =  sequelize.define('Supplies', {
                 }
             },
             len: {
-                args: [5, 30],
-                msg: 'El nombre del insumo debe tener de 5 a 30 caracteres.'
+                args: [3, 30],
+                msg: 'El nombre del insumo debe tener de 3 a 30 caracteres.'
             }
         }
     },
@@ -40,7 +40,7 @@ export const supplies =  sequelize.define('Supplies', {
             }, 
             isInt: true, 
             min: 0,
-            max: 9999
+            max: 99999999
         },
     },
 
@@ -70,16 +70,6 @@ export const supplies =  sequelize.define('Supplies', {
             min: 0,
             max: 9999
         },
-    },
-    
-    Image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El estado es requerido'
-            }
-        }
     },
 
     State: {

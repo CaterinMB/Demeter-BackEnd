@@ -59,14 +59,13 @@ export const checkForDuplicates = async (req, res, next) => {
 
 export const createSupplies = async (req, res) => {
     try {
-        const { Name_Supplies, Unit, Measure, Stock, SuppliesCategory_ID } = req.body;
+        const { Name_Supplies, Unit, Measure, Stock } = req.body;
 
         const createSupplies = await supplies.create({
             Name_Supplies,
             Unit,
             Measure,
             Stock,
-            SuppliesCategory_ID,
             State: true 
         });
 
