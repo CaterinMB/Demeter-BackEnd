@@ -1,6 +1,8 @@
 import { user } from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import { createAccessToken } from '../libs/jwt.js';
+import jwt from 'jsonwebtoken';
+import { TOKEN_SECRET } from '../config.js';
 import { Op } from 'sequelize';
 
 export const getUsers = async (req, res) => {
@@ -219,3 +221,71 @@ export const duplicateWaiter = async (req, res, next) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+
+export const login = async (req, res) => {
+    const {Email, Password} = req.body
+    try{
+  
+      const userFound = await user.findOne({where: {Email}});
+      if(!userFound) return res.status(400).json({message: "User not found"});
+  
+      const isMatch = await bcrypt.compare(Password, userFound.Password)
+  
+      if(!isMatch) return res.status(400).json({message: "Incorrect password"});
+  
+      const token = await createAccessToken({ID_User: userFound.ID_User});
+      res.cookie('token', token);
+      
+      res.json({
+        message: "Usuario ingresado correctamente",
+        id: userFound.ID_User,
+        name: userFound.Name_User,
+        email: userFound.Email,
+      });
+   } catch(error){
+      res.status(500).json({message: error.message});
+   }
+  };
+
+
+export const logout = (req, res) => {
+    res.cookie("token", "", {
+        message: "Usted salió correctamente",
+        expires: new Date(0),
+    });
+    return res.sendStatus(200);
+}
+
+export const profile = async (req, res) => {
+    const UserFound = await user.findByPk(req.user.ID_User)
+
+    if(!UserFound) return res.status(400).json({message: 'Usuario no encontrado'});
+
+    return res.json({
+        id: UserFound.ID_User,
+        username: UserFound.Name_User,
+        email: UserFound.Email,
+    })
+}
+
+export const verifyToken = async (req, res) => {
+    const {token} = req.cookies
+
+    if(!token) return res.status(401).json({message: 'No autorizado' })
+
+    jwt.verify(token, TOKEN_SECRET, async (err, decodedUser) => {
+        if(err) return res.status(401).json({message: 'No autorizado'});
+
+       const userFound = await user.findByPk(decodedUser.ID_User)
+       if(!userFound) return res.status(401).json({message: 'No autorizado'})
+        
+       return res.json({
+        id: userFound.ID_User,
+        username: userFound.Name_User,
+        email: userFound.Email,
+    });
+    });
+};
+
+
