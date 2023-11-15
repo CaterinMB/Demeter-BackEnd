@@ -57,3 +57,21 @@ export const lotUpd = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
+export const deleteSaleDetail = async (req, res) => {
+    try {
+        const {ID_SaleDetail}  = req.params;
+
+        const existingSale = await saleDetail.findByPk(ID_SaleDetail);
+
+        if (!existingSale) {
+            return res.status(404).json({ message: 'Venta no encontrada' });
+        }
+
+        await existingSale.destroy();
+
+        res.json({ message: 'detalle eliminado correctamente' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
