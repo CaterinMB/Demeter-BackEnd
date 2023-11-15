@@ -32,7 +32,7 @@ export const supplies =  sequelize.define('Supplies', {
     },
 
     Unit: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         allowNull: false, 
         validate: {
             notNull:{

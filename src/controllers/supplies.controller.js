@@ -1,17 +1,6 @@
 import { supplies } from "../models/supplies.model.js";
 import { Op } from 'sequelize';
 
-export const getSuppliessByCategory = async (req, res) => {
-    const {id} = req.params
-    
-    try {
-        const suppliess = await supplies.findAll({where : {SuppliesCategory_ID: id}})
-        res.json(suppliess);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
 export const getSupplies = async (req, res) => {
     try {
         const ArraySupplies = await supplies.findAll();
