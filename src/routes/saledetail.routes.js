@@ -9,6 +9,4 @@ router.get('/details/:id', getDetails);
 router.put('/update',lotUpd )
 router.delete('/deleteDetailS/:ID_SaleDetail',deleteSaleDetail )
 
-
-
 export default router;
