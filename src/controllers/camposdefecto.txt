@@ -1,4 +1,4 @@
-const allowedMeasures = ['kg', 'g', 'lb', 'oz'];
+const measures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
 
 export const createDetailP = async (req, res) => {
    const { id } = req.params;   
