@@ -4,6 +4,9 @@ import { createAccessToken } from '../libs/jwt.js';
 import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 import { Op } from 'sequelize';
+import nodemailer from 'nodemailer';
+import transporter from '../transporter.cjs';
+
 
 export const getUsers = async (req, res) => {
     try {
@@ -289,3 +292,32 @@ export const verifyToken = async (req, res) => {
 };
 
 
+export const forgotPassword = async (req, res) => {
+    const { Email } = req.body;
+
+    try {
+        const foundUser  = await user.findOne({ where: { Email } });
+
+        if (!foundUser ) {
+            return res.status(400).json({ message: 'Usuario no encontrado' });
+        }
+
+        const resetToken = jwt.sign({ id: foundUser.ID_User }, TOKEN_SECRET, { expiresIn: '1h' });
+        const resetUrl = `http://localhost:4080/resetPassword/${foundUser.ID_User}/${resetToken}`;
+
+        // Opciones del correo
+        const mailOptions = {
+            from: 'tucorreo@gmail.com', // Tu dirección de correo
+            to: Email, // Email del usuario que necesita restablecer la contraseña
+            subject: 'Restablecer Contraseña',
+            text: `Para restablecer tu contraseña, haz clic en este enlace: ${resetUrl}`,
+        };
+
+        // Enviar el correo utilizando el transportador importado
+        await transporter.sendMail(mailOptions);
+
+        res.json({ message: 'Se ha enviado un correo para restablecer la contraseña' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};

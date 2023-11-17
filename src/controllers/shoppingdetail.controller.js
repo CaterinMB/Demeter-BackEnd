@@ -25,7 +25,7 @@ export const getShopDetail = async (req, res) => {
 
 export const createShopping = async (req, res) => {
     try {
-        const {  Lot, Price_Supplier, Shopping_ID, Supplies_ID } = req.body;
+        const {  Lot, Price_Supplier } = req.body;
 
         const createShopping = await shopping.create({
          Lot, 

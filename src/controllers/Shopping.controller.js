@@ -25,14 +25,11 @@ export const getShop = async (req, res) => {
 
 export const createShopping = async (req, res) => {
     try {
-        const { ID_Shopping, Datetime, ID_Supplier, Total, State, User_ID } = req.body;
+        const { Datetime,  Total, State } = req.body;
 
         const createShopping = await shopping.create({
-         ID_Shopping,	
          Datetime, 
          Total,
-         User_ID, 
-         ID_Supplier, 
          State
         });
 
@@ -42,7 +39,7 @@ export const createShopping = async (req, res) => {
     }
 };
 
-export const disableShop = async (req, res) => {
+/* export const disableShop = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -56,7 +53,7 @@ export const disableShop = async (req, res) => {
             return res.status(404).json({ message: 'Compra no encontrada' });
         }
 
-        const updatedShop = await shop.update({ Estado: !shop.Estado });
+        const updatedShop = await shop.update({ State: !shop.State });
 
         res.json(updatedShop);
     } catch (error) {
@@ -79,4 +76,4 @@ export const updateShopping = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-};
+}; */
