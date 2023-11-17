@@ -39,7 +39,7 @@ export const createShopping = async (req, res) => {
     }
 };
 
-/* export const disableShop = async (req, res) => {
+ export const disableShop = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -61,19 +61,19 @@ export const createShopping = async (req, res) => {
     }
 };
 
-export const updateShopping = async (req, res) => { 
-    const { id } = req.params;
-    try {
-        const updateShop = await shopping.findOne({
-            where: {
-                ID_Shopping: id
-            }
-        });
+// export const updateShopping = async (req, res) => { 
+//     const { id } = req.params;
+//     try {
+//         const updateShop = await shopping.findOne({
+//             where: {
+//                 ID_Shopping: id
+//             }
+//         });
 
-        updateShop.set(req.body);
-        await updateShop.save();
-        return res.json(updateShop);           
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-}; */
+//         updateShop.set(req.body);
+//         await updateShop.save();
+//         return res.json(updateShop);           
+//     } catch (error) {
+//         return res.status(500).json({ message: error.message });
+//     }
+// }; 
