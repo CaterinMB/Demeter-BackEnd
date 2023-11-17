@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
 import { productDetail } from './productdetail.model.js'
 import { shoppingDetail } from './shoppingdetail.model.js'
+import { losses } from './losses.model.js'
 
 export const supplies =  sequelize.define('Supplies', {
 
@@ -102,6 +103,16 @@ supplies.hasMany(shoppingDetail, {
 })
 
 shoppingDetail.belongsTo(supplies, {
+    foreignKey: 'Supplies_ID',
+    targetKey: 'ID_Supplies'
+})
+
+supplies.hasMany(losses, {
+    foreignKey: 'Supplies_ID',
+    sourceKey: 'ID_Supplies'
+})
+
+losses.belongsTo(supplies, {
     foreignKey: 'Supplies_ID',
     targetKey: 'ID_Supplies'
 })

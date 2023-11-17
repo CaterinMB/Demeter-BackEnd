@@ -1,5 +1,6 @@
 import { product } from '../models/product.model.js';
 import { productDetail } from '../models/productdetail.model.js';
+import { supplies } from '../models/supplies.model.js';
 import { Op } from 'sequelize';
 
 export const getProducts = async (req, res) => {
@@ -151,16 +152,45 @@ export const getDetailProduct = async (req, res) => {
 };
 
 export const createDetailP = async (req, res) => {
-    const { id } = req.params;    
+    const { id } = req.params;
 
     try {
         const { Supplies_ID, Measure, Lot_ProductDetail } = req.body
+
+        // Obtener la medida del insumo correspondiente
+        const supplie = await supplies.findById(Supplies_ID);
+        if (!supplie) {
+            return res.status(404).json({ message: 'El insumo no existe' });
+        }
+
+        let Lot = Lot_ProductDetail;
+
+        //Se hacen las conversiones
+        if (supplie.Measure === 'Kilogramos (kg)' && Measure === 'Gramos (g)') {
+            Lot = Lot_ProductDetail * 1000;
+        }
+        else if (supplie.Measure === 'Litros (L)' && Measure === 'Mililitros (ml)') {
+            Lot = Lot_ProductDetail * 1000;
+        }
+        else if (supplie.Measure === 'Gramos (g)' && Measure === 'Gramos (g)') {
+            Lot = Lot_ProductDetail;
+        }
+        else if (supplie.Measure === 'Mililitros (ml)' && Measure === 'Mililitros (ml)') {
+            Lot = Lot_ProductDetail;
+        }
+        else if (supplie.Measure === 'Unidad(es)' && Measure === 'Unidad(es)') {
+            Lot = Lot_ProductDetail;
+        }
+        else {
+            return res.status(404).json({ message: 'Una de las medidas de insumo o la receta esta erronea.' });
+        }
+
         const createDetail = await productDetail.create({
-            Product_ID : id,
-            Supplies_ID : Supplies_ID,
+            Product_ID: id,
+            Supplies_ID: Supplies_ID,
             Measure,
             Lot_ProductDetail,
-            State: true 
+            State: true
         })
         res.json(createDetail);
     } catch (error) {
