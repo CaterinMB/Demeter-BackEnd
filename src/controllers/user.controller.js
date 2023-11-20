@@ -303,7 +303,7 @@ export const forgotPassword = async (req, res) => {
         }
 
         const resetToken = jwt.sign({ id: foundUser.ID_User }, TOKEN_SECRET, { expiresIn: '1h' });
-        const resetUrl = `http://localhost:4080/resetPassword/${foundUser.ID_User}/${resetToken}`;
+        const resetUrl = `http://localhost:4080/newPassword/${foundUser.ID_User}/${resetToken}`;
 
         // Opciones del correo
         const mailOptions = {
@@ -321,3 +321,22 @@ export const forgotPassword = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const NewPassword = async (req, res) => {
+    const { token, Password } = req.body;
+
+    
+    try {
+        const tokenDecode = jwt.decode(token, TOKEN_SECRET)
+        const foundUser  = await user.findByPk({id: tokenDecode.id});
+        const passwordHast = await bcrypt.hash(Password, 10)
+        await foundUser.update({Password: passwordHast})
+        res.json({
+            msg: 'Se actualizó correctamente'
+        })
+
+       
+    }catch(e){
+        return res.status(500).json({ message: error.message });
+    }
+}
