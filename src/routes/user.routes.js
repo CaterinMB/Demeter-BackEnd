@@ -8,7 +8,7 @@ const router = Router();
 router.get('/user', getUsers);
 router.get('/user/:id', getUser);
 router.post('/add_user', checkForDuplicates, createUser);
-router.put('/update_user/:id', updateUser);
+router.put('/user/:id', updateUser);
 router.put("/user/toggle/:id", toggleUserStatus);
 router.delete('/user/:id', deleteUser);
 

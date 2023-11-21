@@ -118,25 +118,6 @@ export const deleteProduct = async (req, res) => {
 
 // Deatlles del producto
 
-export const getDetailsPByProduct = async (req, res) => {
-    const { id } = req.params
-
-    try {
-        const getProduct = await product.findOne({
-            where: { ID_Product: id }
-        })
-        const getDetailsPByProduct = await productDetail.findOne({
-            where: { Product_ID: id }
-        })
-
-        if (!getDetailsPByProduct) return res.status(404).json({ message: 'No exite el producto.' })
-
-        res.json(getProduct, getDetailsPByProduct);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
 export const getDetailProduct = async (req, res) => {
     const { id } = req.params
 
