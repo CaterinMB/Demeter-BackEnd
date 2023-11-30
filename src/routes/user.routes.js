@@ -23,7 +23,7 @@ router.post('/logout', logout);
 router.get('/profile', authRequired, profile)
 router.get('/verifyToken', verifyToken)
 router.post('/resetPassword', forgotPassword);
-router.post('/NewPassword', NewPassword);
+router.post('/newPassword', NewPassword);
 
 
 export default router;

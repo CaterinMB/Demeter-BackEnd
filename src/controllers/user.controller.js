@@ -231,11 +231,11 @@ export const login = async (req, res) => {
     try{
   
       const userFound = await user.findOne({where: {Email}});
-      if(!userFound) return res.status(400).json({message: "User not found"});
+      if(!userFound) return res.status(400).json({message: "Email invalido"});
   
       const isMatch = await bcrypt.compare(Password, userFound.Password)
   
-      if(!isMatch) return res.status(400).json({message: "Incorrect password"});
+      if(!isMatch) return res.status(400).json({message: "Contraseña incorrecta"});
   
       const token = await createAccessToken({ID_User: userFound.ID_User});
       res.cookie('token', token);
@@ -303,7 +303,7 @@ export const forgotPassword = async (req, res) => {
         }
 
         const resetToken = jwt.sign({ id: foundUser.ID_User }, TOKEN_SECRET, { expiresIn: '1h' });
-        const resetUrl = `http://localhost:4080/newPassword/${foundUser.ID_User}/${resetToken}`;
+        const resetUrl = ` http://localhost:5173/newPassword/${foundUser.ID_User}?token=${resetToken}`;
 
         // Opciones del correo
         const mailOptions = {
@@ -327,16 +327,26 @@ export const NewPassword = async (req, res) => {
 
     
     try {
+        console.log('Token:', token);
+        console.log('Password:', Password);
+
         const tokenDecode = jwt.decode(token, TOKEN_SECRET)
         const foundUser  = await user.findByPk({id: tokenDecode.id});
+
+        console.log('Found user:', foundUser);
+
         const passwordHast = await bcrypt.hash(Password, 10)
         await foundUser.update({Password: passwordHast})
+
+        console.log('Password updated successfully');
+
         res.json({
             msg: 'Se actualizó correctamente'
         })
 
        
-    }catch(e){
+    }catch(error){
+        console.error('Error:', error);
         return res.status(500).json({ message: error.message });
     }
 }
