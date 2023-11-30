@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { createSaleDetail, getDetails, createManyDetails, lotUpd, deleteSaleDetail} from "../controllers/saledetail.controller.js";
+import { createSaleDetail, getDetails, createManyDetails, lotUpd, deleteSaleDetail, getDetailsWithProductInfo} from "../controllers/saledetail.controller.js";
 
 const router = Router();
 
 router.post('/Csaledetail', createSaleDetail);
 router.post('/CManyDetails', createManyDetails);
 router.get('/details/:id', getDetails);
+router.get('/detailsWproduct/:id', getDetailsWithProductInfo);
 router.put('/update',lotUpd )
 router.delete('/deleteDetailS/:ID_SaleDetail',deleteSaleDetail )
 

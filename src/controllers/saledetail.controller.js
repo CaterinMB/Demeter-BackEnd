@@ -1,4 +1,5 @@
 import { saleDetail } from '../models/saledetail.model.js';
+import { product } from '../models/product.model.js';
 import { Op } from 'sequelize';
 
 export const createSaleDetail = async (req, res) => {
@@ -75,3 +76,21 @@ export const deleteSaleDetail = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+export const getDetailsWithProductInfo = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const details = await saleDetail.findAll({
+            where: { Sale_ID: id },
+            include: [{
+                model: product,
+                attributes: ['Name_Products', 'Price_Product'],
+                required: true, 
+            }],
+        });
+
+        res.json(details);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
