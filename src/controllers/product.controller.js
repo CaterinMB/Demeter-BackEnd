@@ -43,7 +43,7 @@ export const createProduct = async (req, res) => {
             Image,
             Price_Product,
             ProductCategory_ID,
-            State: true
+            State: false
         })
 
         res.json(newProduct);
