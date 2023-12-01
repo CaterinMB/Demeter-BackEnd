@@ -11,7 +11,9 @@ import userRoutes from './routes/user.routes.js';
 import supplierRoutes from './routes/supplier.routes.js'
 import shoppingRoutes from './routes/shopping.routes.js'
 import shoppingdetailRoute from './routes/shopping.routes.js'
-
+import RoutesSale from './routes/sale.routes.js';
+import RoutesSaleDetail from './routes/saledetail.routes.js'
+import dashboardRoutes from './routes/dashboard.routes.js';
 
 const app = express();
 
@@ -32,5 +34,8 @@ app.use(category_productsRoutes);
 app.use(suppliesRoutes);
 app.use(roleRoutes);
 app.use(userRoutes);
+app.use(RoutesSale);
+app.use(RoutesSaleDetail);
+app.use(dashboardRoutes);
 
 export default app;
