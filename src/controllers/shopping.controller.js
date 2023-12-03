@@ -74,10 +74,35 @@ export const getShoppingAndSuppliesBySupplierId = async (req, res) => {
                     model: shopping,
                     where: {
                         Supplier_ID: id
-                    }
+                    },
                 },
                 {
-                    model: supplies
+                    model: supplies,
+                }
+            ]
+        })
+
+        res.json(shoppingAndShoppingDetails);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getShoppingAndSuppliesBySupplierIdAndDate = async (req, res) => {
+    try {
+
+        const { id, date } = req.params
+        const shoppingAndShoppingDetails = await shoppingDetail.findAll({
+            include: [
+                {
+                    model: shopping,
+                    where: {
+                        Supplier_ID: id,
+                        Datetime: date
+                    },
+                },
+                {
+                    model: supplies,
                 }
             ]
         })
@@ -92,11 +117,11 @@ export const getShopingByProvider = async (req, res) => {
     try {
 
         const shoppingBySupplier = await shopping.findAll({
-            group: "Supplier_ID",
             include: [{
                 model: supplier,
                 required: true
-            }]
+            }],
+            group: "Datetime"
         })
 
         res.json(shoppingBySupplier);
