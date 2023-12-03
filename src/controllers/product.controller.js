@@ -80,13 +80,19 @@ export const toggleProductStatus = async (req, res) => {
             where: { ID_Product: id },
         });
 
+        const statusRecipe = await productDetail.findAll({
+            where: { Product_ID: id},
+        });
+
         if (!statusProduct) {
             return res.status(404).json({ message: 'El producto no se encontro' });
         };
 
         statusProduct.State = !statusProduct.State;
+        statusRecipe.State = !statusRecipe.State;
 
         await statusProduct.save();
+        await statusRecipe.save();
 
         return res.json(statusProduct);
     } catch (error) {

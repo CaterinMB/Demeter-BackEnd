@@ -11,6 +11,7 @@ import userRoutes from './routes/user.routes.js';
 import supplierRoutes from './routes/supplier.routes.js'
 import shoppingRoutes from './routes/shopping.routes.js'
 import shoppingdetailRoute from './routes/shopping.routes.js'
+import productRoutes from './routes/product.routes.js';
 
 
 const app = express();
@@ -32,5 +33,6 @@ app.use(category_productsRoutes);
 app.use(suppliesRoutes);
 app.use(roleRoutes);
 app.use(userRoutes);
+app.use(productRoutes);
 
 export default app;
