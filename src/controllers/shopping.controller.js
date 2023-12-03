@@ -1,6 +1,9 @@
+import { sequelize } from '../db/dataBase.js';
 import { shopping } from '../models/shopping.model.js'
 import { shoppingDetail } from '../models/shoppingdetail.model.js';
 import { supplier } from '../models/supplier.model.js';
+import { supplies } from '../models/supplies.model.js';
+import { updateUnitSupplieById } from './supplies.controller.js';
 
 export const getShopping = async (req, res) => {
     try {
@@ -61,6 +64,47 @@ export const getShopingAndShopingDetails = async (req, res) => {
     }
 };
 
+export const getShoppingAndSuppliesBySupplierId = async (req, res) => {
+    try {
+
+        const { id } = req.params
+        const shoppingAndShoppingDetails = await shoppingDetail.findAll({
+            include: [
+                {
+                    model: shopping,
+                    where: {
+                        Supplier_ID: id
+                    }
+                },
+                {
+                    model: supplies
+                }
+            ]
+        })
+
+        res.json(shoppingAndShoppingDetails);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getShopingByProvider = async (req, res) => {
+    try {
+
+        const shoppingBySupplier = await shopping.findAll({
+            group: "Supplier_ID",
+            include: [{
+                model: supplier,
+                required: true
+            }]
+        })
+
+        res.json(shoppingBySupplier);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 
 
 export const createMultipleShopping = async (req, res) => {
@@ -82,7 +126,9 @@ export const createMultipleShopping = async (req, res) => {
                 Shopping_ID: createdShopping.ID_Shopping
             })
 
-            dataInserted.push({ createdShopping, createdShoppingDetail })
+            const supplyUpdated = await updateUnitSupplieById(createdShoppingDetail.Supplies_ID, shoppingDetails.Lot)
+
+            dataInserted.push({ createdShopping, createdShoppingDetail, supplyUpdated })
         }
 
         res.json(dataInserted);

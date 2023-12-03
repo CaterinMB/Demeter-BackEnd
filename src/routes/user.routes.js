@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsers, getUser, checkForDuplicates, createUser, updateUser, toggleUserStatus, deleteUser, login, logout, profile, verifyToken, forgotPassword, NewPassword  } from '../controllers/user.controller.js';
+import { getUsers, getUser, checkForDuplicates, createUser, updateUser, toggleUserStatus, deleteUser, login, logout, profile, verifyToken, forgotPassword, NewPassword, getUserCookies  } from '../controllers/user.controller.js';
 import { getWaiters, createWaiter, duplicateWaiter, getWaiter } from '../controllers/user.controller.js';
 import { authRequired } from '../middlewares/validateToken.js'
 
@@ -7,6 +7,7 @@ const router = Router();
 
 router.get('/user', getUsers);
 router.get('/user/:id', getUser);
+router.get('/getUserCookies', getUserCookies);
 router.post('/add_user', checkForDuplicates, createUser);
 router.put('/user/:id', updateUser);
 router.put("/user/toggle/:id", toggleUserStatus);

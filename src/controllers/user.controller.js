@@ -227,29 +227,29 @@ export const duplicateWaiter = async (req, res, next) => {
 
 
 export const login = async (req, res) => {
-    const {Email, Password} = req.body
-    try{
-  
-      const userFound = await user.findOne({where: {Email}});
-      if(!userFound) return res.status(400).json({message: "Email invalido"});
-  
-      const isMatch = await bcrypt.compare(Password, userFound.Password)
-  
-      if(!isMatch) return res.status(400).json({message: "Contraseña incorrecta"});
-  
-      const token = await createAccessToken({ID_User: userFound.ID_User});
-      res.cookie('token', token);
-      
-      res.json({
-        message: "Usuario ingresado correctamente",
-        id: userFound.ID_User,
-        name: userFound.Name_User,
-        email: userFound.Email,
-      });
-   } catch(error){
-      res.status(500).json({message: error.message});
-   }
-  };
+    const { Email, Password } = req.body
+    try {
+
+        const userFound = await user.findOne({ where: { Email } });
+        if (!userFound) return res.status(400).json({ message: "Email invalido" });
+
+        const isMatch = await bcrypt.compare(Password, userFound.Password)
+
+        if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
+
+        const token = await createAccessToken({ ID_User: userFound.ID_User });
+        res.cookie('token', token);
+
+        res.json({
+            message: "Usuario ingresado correctamente",
+            id: userFound.ID_User,
+            name: userFound.Name_User,
+            email: userFound.Email,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 export const logout = (req, res) => {
@@ -263,7 +263,7 @@ export const logout = (req, res) => {
 export const profile = async (req, res) => {
     const UserFound = await user.findByPk(req.user.ID_User)
 
-    if(!UserFound) return res.status(400).json({message: 'Usuario no encontrado'});
+    if (!UserFound) return res.status(400).json({ message: 'Usuario no encontrado' });
 
     return res.json({
         id: UserFound.ID_User,
@@ -273,21 +273,21 @@ export const profile = async (req, res) => {
 }
 
 export const verifyToken = async (req, res) => {
-    const {token} = req.cookies
+    const { token } = req.cookies
 
-    if(!token) return res.status(401).json({message: 'No autorizado' })
+    if (!token) return res.status(401).json({ message: 'No autorizado' })
 
     jwt.verify(token, TOKEN_SECRET, async (err, decodedUser) => {
-        if(err) return res.status(401).json({message: 'No autorizado'});
+        if (err) return res.status(401).json({ message: 'No autorizado' });
 
-       const userFound = await user.findByPk(decodedUser.ID_User)
-       if(!userFound) return res.status(401).json({message: 'No autorizado'})
-        
-       return res.json({
-        id: userFound.ID_User,
-        username: userFound.Name_User,
-        email: userFound.Email,
-    });
+        const userFound = await user.findByPk(decodedUser.ID_User)
+        if (!userFound) return res.status(401).json({ message: 'No autorizado' })
+
+        return res.json({
+            id: userFound.ID_User,
+            username: userFound.Name_User,
+            email: userFound.Email,
+        });
     });
 };
 
@@ -296,14 +296,14 @@ export const forgotPassword = async (req, res) => {
     const { Email } = req.body;
 
     try {
-        const foundUser  = await user.findOne({ where: { Email } });
+        const foundUser = await user.findOne({ where: { Email } });
 
-        if (!foundUser ) {
+        if (!foundUser) {
             return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
         const resetToken = jwt.sign({ id: foundUser.ID_User }, TOKEN_SECRET, { expiresIn: '1h' });
-        const resetUrl = ` http://localhost:5173/newPassword/${foundUser.ID_User}?token=${resetToken}`;
+        const resetUrl = ` http://localhost:5173/newPassword/${foundUser.ID_User}`;
 
         // Opciones del correo
         const mailOptions = {
@@ -316,37 +316,51 @@ export const forgotPassword = async (req, res) => {
         // Enviar el correo utilizando el transportador importado
         await transporter.sendMail(mailOptions);
 
-        res.json({ message: 'Se ha enviado un correo para restablecer la contraseña' });
+        res.cookie("passwordToken", resetToken).json({ message: 'Se ha enviado un correo para restablecer la contraseña' });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
+export const getUserCookies = (req, res) => {
+
+    const cookies = req.cookies;
+
+    res.json({
+        cookies
+    })
+}
+
 export const NewPassword = async (req, res) => {
     const { token, Password } = req.body;
 
-    
     try {
         console.log('Token:', token);
         console.log('Password:', Password);
 
         const tokenDecode = jwt.decode(token, TOKEN_SECRET)
-        const foundUser  = await user.findByPk({id: tokenDecode.id});
+        const foundUser = await user.findOne({
+            where: {
+                ID_User: tokenDecode.id
+            }
+        });
 
+        
         console.log('Found user:', foundUser);
 
         const passwordHast = await bcrypt.hash(Password, 10)
-        await foundUser.update({Password: passwordHast})
+        await foundUser.update({ Password: passwordHast })
 
         console.log('Password updated successfully');
 
-        res.json({
-            msg: 'Se actualizó correctamente'
+        res.cookie("passwordToken", "").json({
+            msg: 'Se actualizó correctamente',
+            hasError: false
         })
 
-       
-    }catch(error){
+
+    } catch (error) {
         console.error('Error:', error);
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message, hasError: true });
     }
 }

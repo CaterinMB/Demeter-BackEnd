@@ -2,10 +2,10 @@ import { supplies } from "../models/supplies.model.js";
 import { Op } from 'sequelize';
 
 export const getSuppliessByCategory = async (req, res) => {
-    const {id} = req.params
-    
+    const { id } = req.params
+
     try {
-        const suppliess = await supplies.findAll({where : {SuppliesCategory_ID: id}})
+        const suppliess = await supplies.findAll({ where: { SuppliesCategory_ID: id } })
         res.json(suppliess);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -66,7 +66,7 @@ export const createSupplies = async (req, res) => {
             Unit,
             Measure,
             Stock,
-            State: true 
+            State: true
         });
 
         res.json(createSupplies);
@@ -97,7 +97,57 @@ export const disableSupplies = async (req, res) => {
     }
 };
 
-export const updateSupplies = async (req, res) => { 
+export const updateUnitSupplieById = async (id, quantity) => {
+    let hasError = false
+    let message = ""
+    let data = null
+
+    try {
+
+        const supply = await supplies.findOne({
+            where: {
+                ID_Supplies: id
+            }
+        });
+
+        if (!supply) {
+            hasError = true
+            message = 'Insumo no encontrado'
+        }
+
+        data = await supplies.update({ Unit: supply?.Unit + quantity }, {
+            where: {
+                ID_Supplies: id
+            }
+        })
+
+    } catch (error) {
+        hasError = true
+        message = error.message
+    }
+
+    return {
+        data,
+        hasError,
+        message
+    }
+};
+
+export const updateUnitSupplieByIdAndSend = async (req, res) => {
+    try {
+        const { id, quantity } = req.params
+        const { data, hasError, message } = await updateUnitSupplieById(id, quantity)
+
+        if (hasError) {
+            return res.status(500).json({ message });
+        }
+        return res.json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const updateSupplies = async (req, res) => {
     const { id } = req.params;
     try {
         const updateSupplies = await supplies.findOne({
@@ -108,17 +158,17 @@ export const updateSupplies = async (req, res) => {
 
         updateSupplies.set(req.body);
         await updateSupplies.save();
-        return res.json(updateSupplies);           
+        return res.json(updateSupplies);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
 export const deleteSupplies = async (req, res) => {
-    
+
     try {
         const { id } = req.params;
-        
+
         await supplies.destroy({
             where: {
                 ID_Supplies: id
