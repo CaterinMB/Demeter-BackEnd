@@ -10,6 +10,19 @@ export const getSupplier = async (req, res) => {
     }
 };
 
+export const getSupplierByState = async (req, res) => {
+    try {
+        const ArraySupplier = await supplier.findAll({
+            where: {
+                State: 1
+            }
+        });
+        res.json(ArraySupplier);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const getSupplie = async (req, res) => {
     const { id } = req.params;
     try {                                                                                                                 
