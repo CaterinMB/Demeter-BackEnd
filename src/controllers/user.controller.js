@@ -81,6 +81,7 @@ export const createUser = async (req, res) => {
         res.json({
             message: "Usuario creado correctamente",
             Nombre: newUser.Name_User,
+            token
         });
 
     } catch (error) {
@@ -345,7 +346,7 @@ export const NewPassword = async (req, res) => {
             }
         });
 
-        
+
         console.log('Found user:', foundUser);
 
         const passwordHast = await bcrypt.hash(Password, 10)

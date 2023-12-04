@@ -7,3 +7,4 @@ router.get('/shoppingdetail', getshoppingDetail);
 router.get('/shoppingdetail/:id', getShopDetail);
 router.post('/shoppingdetail', createShopping);
 
+export default router

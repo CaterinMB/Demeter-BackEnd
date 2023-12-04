@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { permissionModule } from './permissionModule.model.js'
+import { role } from "./role.model.js";
 
 export const module = sequelize.define('Modules', {
 
@@ -30,12 +30,12 @@ export const module = sequelize.define('Modules', {
     timestamps: false
 });
 
-module.hasMany(permissionModule, {
-    foreignKey: 'Module_ID',
-    sourceKey: 'ID_Module'
+role.hasMany(module, {
+    foreignKey: 'Role_ID',
+    sourceKey: 'ID_Role'
 })
 
-permissionModule.belongsTo(module, {
-    foreignKey: 'Module_ID',
-    targetKey: 'ID_Module'
+module.belongsTo(role, {
+    foreignKey: 'Role_ID',
+    targetKey: 'ID_Role'
 })
