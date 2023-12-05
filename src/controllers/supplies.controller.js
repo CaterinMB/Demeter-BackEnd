@@ -1,12 +1,23 @@
 import { supplies } from "../models/supplies.model.js";
 import { Op } from 'sequelize';
 
+export const getSuppliessByCategory = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const suppliess = await supplies.findAll({ where: { SuppliesCategory_ID: id } })
+        res.json(suppliess);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const getSupplies = async (req, res) => {
     try {
         const ArraySupplies = await supplies.findAll();
         res.json(ArraySupplies);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -18,9 +29,12 @@ export const getSupplie = async (req, res) => {
                 ID_Supplies: id
             }
         });
+        if (!oneSupplie) {
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
+        }
         res.json(oneSupplie);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -42,7 +56,7 @@ export const checkForDuplicates = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -52,7 +66,7 @@ export const createSupplies = async (req, res) => {
         const { Name_Supplies, Unit, Measure, Stock, SuppliesCategory_ID } = req.body;
 
         if (!measures.includes(Measure)) {
-            return res.status(400).json({ message: 'Medida no valida.' });
+            return res.status(400).json({ mensaje: 'Medida no válida.' });
         }
 
         const createSupplies = await supplies.create({
@@ -61,12 +75,12 @@ export const createSupplies = async (req, res) => {
             Measure,
             Stock,
             SuppliesCategory_ID,
-            State: true 
+            State: true
         });
 
         res.json(createSupplies);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -81,55 +95,132 @@ export const disableSupplies = async (req, res) => {
         });
 
         if (!supply) {
-            return res.status(404).json({ message: 'Insumo no encontrado' });
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
         }
 
         const updatedSupply = await supply.update({ State: !supply.State });
 
         res.json(updatedSupply);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
-export const updateSupplies = async (req, res) => { 
+//sumar la cantidad de la compra
+export const updateUnitSupplieById = async (id, quantity) => {
+    let hasError = false
+    let message = ""
+    let data = null
+
+    try {
+
+        const supply = await supplies.findOne({
+            where: {
+                ID_Supplies: id
+            }
+        });
+
+        if (!supply) {
+            hasError = true
+            message = 'Insumo no encontrado'
+        }
+
+        const currentQuantity = parseFloat(supply.Unit);
+        const newQuantity = parseFloat(quantity);
+
+        // Verificar si las conversiones son válidas
+        if (!isNaN(currentQuantity) && !isNaN(newQuantity)) {
+            // Realizar la suma y actualizar la cantidad del insumo
+            const updatedQuantity = currentQuantity + newQuantity;
+            const updatedSupply = await supply.update({ Unit: updatedQuantity });
+
+            data = updatedSupply;
+        } else {
+            hasError = true;
+            message = 'Las cantidades no son números válidos';
+        }
+
+    } catch (error) {
+        hasError = true
+        message = error.message
+    }
+
+    return {
+        data,
+        hasError,
+        message
+    }
+};
+
+export const updateUnitSupplieByIdAndSend = async (req, res) => {
+    try {
+        const { id, quantity } = req.params
+        const { data, hasError, message } = await updateUnitSupplieById(id, quantity)
+
+        if (hasError) {
+            return res.status(500).json({ message });
+        }
+        return res.json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const updateSupplies = async (req, res) => {
     try {
         const { id } = req.params;
 
         const measures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
-        const { Name_Supplies, Measure, Stock, SuppliesCategory_ID } = req.body
+        const { Name_Supplies, Measure, Stock, SuppliesCategory_ID } = req.body;
 
         if (!measures.includes(Measure)) {
-            return res.status(400).json({ message: 'Medida no valida.' });
+            return res.status(400).json({ mensaje: 'Medida no válida.' });
         }
-        
-        const updateSupplies = await supplies.findByPk(id)
 
-        updateSupplies.Name_Supplies = Name_Supplies,
-        updateSupplies.Measure = Measure,
-        updateSupplies.Stock = Stock,
-        updateSupplies.SuppliesCategory_ID = SuppliesCategory_ID,
+        const updateSupplies = await supplies.findByPk(id);
 
-        await updateSupplies.save()
+        if (!updateSupplies) {
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
+        }
 
-        res.json(updateSupplies);           
+        updateSupplies.Name_Supplies = Name_Supplies;
+        updateSupplies.Measure = Measure;
+        updateSupplies.Stock = Stock;
+        updateSupplies.SuppliesCategory_ID = SuppliesCategory_ID;
+
+        await updateSupplies.save();
+
+        updateSupplies.set(req.body);
+        await updateSupplies.save();
+        return res.json(updateSupplies);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
 export const deleteSupplies = async (req, res) => {
-    
     try {
         const { id } = req.params;
         
+        const supply = await supplies.findOne({
+            where: {
+                ID_Supplies: id
+            }
+        });
+
+        if (!supply) {
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
+        }
+
+
         await supplies.destroy({
             where: {
                 ID_Supplies: id
             }
         });
+
         return res.sendStatus(204);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };

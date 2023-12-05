@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import {getSupplier, getSupplie, createSupplier, disableSupplier, updateSupplier, deleteSupplier} from '../controllers/supplier.controller.js';
+import {getSupplier, getSupplie, createSupplier, disableSupplier, updateSupplier, deleteSupplier, getSupplierByState} from '../controllers/supplier.controller.js';
 
 const router = Router();
 
 router.get("/supplier", getSupplier);
+router.get("/supplierByState", getSupplierByState);
 router.get("/supplier/:id", getSupplie);
 router.post("/supplier", createSupplier);
 router.put("/supplier/disable/:id", disableSupplier);
