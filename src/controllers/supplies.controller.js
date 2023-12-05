@@ -97,6 +97,7 @@ export const disableSupplies = async (req, res) => {
     }
 };
 
+//sumar la cantidad de la compra
 export const updateUnitSupplieById = async (id, quantity) => {
     let hasError = false
     let message = ""
@@ -115,11 +116,20 @@ export const updateUnitSupplieById = async (id, quantity) => {
             message = 'Insumo no encontrado'
         }
 
-        data = await supplies.update({ Unit: supply?.Unit + quantity }, {
-            where: {
-                ID_Supplies: id
-            }
-        })
+        const currentQuantity = parseFloat(supply.Unit);
+        const newQuantity = parseFloat(quantity);
+
+        // Verificar si las conversiones son válidas
+        if (!isNaN(currentQuantity) && !isNaN(newQuantity)) {
+            // Realizar la suma y actualizar la cantidad del insumo
+            const updatedQuantity = currentQuantity + newQuantity;
+            const updatedSupply = await supply.update({ Unit: updatedQuantity });
+
+            data = updatedSupply;
+        } else {
+            hasError = true;
+            message = 'Las cantidades no son números válidos';
+        }
 
     } catch (error) {
         hasError = true

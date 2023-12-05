@@ -25,11 +25,12 @@ export const getShopDetail = async (req, res) => {
 
 export const createShopping = async (req, res) => {
     try {
-        const {  Lot, Price_Supplier } = req.body;
+        const {  Lot, Price_Supplier, Measure } = req.body;
 
         const createShopping = await shopping.create({
          Lot, 
          Price_Supplier,
+         Measure
          
         });
 
