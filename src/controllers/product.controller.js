@@ -43,7 +43,7 @@ export const createProduct = async (req, res) => {
             Image,
             Price_Product,
             ProductCategory_ID,
-            State: true
+            State: false
         })
 
         res.json(newProduct);
@@ -80,13 +80,19 @@ export const toggleProductStatus = async (req, res) => {
             where: { ID_Product: id },
         });
 
+        const statusRecipe = await productDetail.findAll({
+            where: { Product_ID: id},
+        });
+
         if (!statusProduct) {
             return res.status(404).json({ message: 'El producto no se encontro' });
         };
 
         statusProduct.State = !statusProduct.State;
+        statusRecipe.State = !statusRecipe.State;
 
         await statusProduct.save();
+        await statusRecipe.save();
 
         return res.json(statusProduct);
     } catch (error) {
@@ -117,25 +123,6 @@ export const deleteProduct = async (req, res) => {
 };
 
 // Deatlles del producto
-
-export const getDetailsPByProduct = async (req, res) => {
-    const { id } = req.params
-
-    try {
-        const getProduct = await product.findOne({
-            where: { ID_Product: id }
-        })
-        const getDetailsPByProduct = await productDetail.findOne({
-            where: { Product_ID: id }
-        })
-
-        if (!getDetailsPByProduct) return res.status(404).json({ message: 'No exite el producto.' })
-
-        res.json(getProduct, getDetailsPByProduct);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
 
 export const getDetailProduct = async (req, res) => {
     const { id } = req.params

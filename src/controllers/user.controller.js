@@ -111,6 +111,57 @@ export const updateUser = async (req, res) => {
     }
 };
 
+export const editProfile = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const { Name_User, LastName_User, Email } = req.body
+
+        const updateUser = await user.findByPk(id)
+
+        updateUser.Name_User = Name_User
+        updateUser.LastName_User = LastName_User
+        updateUser.Email = Email
+
+        await updateUser.save();
+
+        return res.json(updateUser);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const changePassword = async (req, res) => {
+    const { id } = req.params
+
+    try {
+
+        const { Password, NewPassword } = req.body;
+
+        const userFound = await user.findOne({ where: { ID_User: id } });
+
+        const isMatch = await bcrypt.compare(Password, userFound.Password)
+
+        if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
+
+        const passwordHast = await bcrypt.hash(NewPassword, 10)
+
+        const updateUser = await user.findByPk(id)
+
+        updateUser.Password = passwordHast
+
+        await updateUser.save();
+
+        
+        const token = await createAccessToken({ ID_User: userFound.ID_User });
+        res.cookie('token', token);
+
+        return res.json(updateUser);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const toggleUserStatus = async (req, res) => {
     const { id } = req.params;
 
