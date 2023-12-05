@@ -17,7 +17,7 @@ export const getSupplies = async (req, res) => {
         const ArraySupplies = await supplies.findAll();
         res.json(ArraySupplies);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -29,9 +29,12 @@ export const getSupplie = async (req, res) => {
                 ID_Supplies: id
             }
         });
+        if (!oneSupplie) {
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
+        }
         res.json(oneSupplie);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -53,7 +56,7 @@ export const checkForDuplicates = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -63,7 +66,7 @@ export const createSupplies = async (req, res) => {
         const { Name_Supplies, Unit, Measure, Stock, SuppliesCategory_ID } = req.body;
 
         if (!measures.includes(Measure)) {
-            return res.status(400).json({ message: 'Medida no valida.' });
+            return res.status(400).json({ mensaje: 'Medida no válida.' });
         }
 
         const createSupplies = await supplies.create({
@@ -77,7 +80,7 @@ export const createSupplies = async (req, res) => {
 
         res.json(createSupplies);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -92,14 +95,14 @@ export const disableSupplies = async (req, res) => {
         });
 
         if (!supply) {
-            return res.status(404).json({ message: 'Insumo no encontrado' });
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
         }
 
         const updatedSupply = await supply.update({ State: !supply.State });
 
         res.json(updatedSupply);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -168,41 +171,56 @@ export const updateSupplies = async (req, res) => {
         const { id } = req.params;
 
         const measures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
-        const { Name_Supplies, Measure, Stock, SuppliesCategory_ID } = req.body
+        const { Name_Supplies, Measure, Stock, SuppliesCategory_ID } = req.body;
 
         if (!measures.includes(Measure)) {
-            return res.status(400).json({ message: 'Medida no valida.' });
+            return res.status(400).json({ mensaje: 'Medida no válida.' });
         }
-        
-        const updateSupplies = await supplies.findByPk(id)
 
-        updateSupplies.Name_Supplies = Name_Supplies,
-        updateSupplies.Measure = Measure,
-        updateSupplies.Stock = Stock,
-        updateSupplies.SuppliesCategory_ID = SuppliesCategory_ID,
+        const updateSupplies = await supplies.findByPk(id);
 
-        await updateSupplies.save()
+        if (!updateSupplies) {
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
+        }
+
+        updateSupplies.Name_Supplies = Name_Supplies;
+        updateSupplies.Measure = Measure;
+        updateSupplies.Stock = Stock;
+        updateSupplies.SuppliesCategory_ID = SuppliesCategory_ID;
+
+        await updateSupplies.save();
 
         updateSupplies.set(req.body);
         await updateSupplies.save();
         return res.json(updateSupplies);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
 
 export const deleteSupplies = async (req, res) => {
-
     try {
         const { id } = req.params;
+        
+        const supply = await supplies.findOne({
+            where: {
+                ID_Supplies: id
+            }
+        });
+
+        if (!supply) {
+            return res.status(404).json({ mensaje: 'Insumo no encontrado' });
+        }
+
 
         await supplies.destroy({
             where: {
                 ID_Supplies: id
             }
         });
+
         return res.sendStatus(204);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ mensaje: error.message });
     }
 };
