@@ -59,13 +59,19 @@ export const checkForDuplicates = async (req, res, next) => {
 
 export const createSupplies = async (req, res) => {
     try {
-        const { Name_Supplies, Unit, Measure, Stock } = req.body;
+        const measures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
+        const { Name_Supplies, Unit, Measure, Stock, SuppliesCategory_ID } = req.body;
+
+        if (!measures.includes(Measure)) {
+            return res.status(400).json({ message: 'Medida no valida.' });
+        }
 
         const createSupplies = await supplies.create({
             Name_Supplies,
             Unit,
             Measure,
             Stock,
+            SuppliesCategory_ID,
             State: true
         });
 
@@ -158,13 +164,24 @@ export const updateUnitSupplieByIdAndSend = async (req, res) => {
 }
 
 export const updateSupplies = async (req, res) => {
-    const { id } = req.params;
     try {
-        const updateSupplies = await supplies.findOne({
-            where: {
-                ID_Supplies: id
-            }
-        });
+        const { id } = req.params;
+
+        const measures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
+        const { Name_Supplies, Measure, Stock, SuppliesCategory_ID } = req.body
+
+        if (!measures.includes(Measure)) {
+            return res.status(400).json({ message: 'Medida no valida.' });
+        }
+        
+        const updateSupplies = await supplies.findByPk(id)
+
+        updateSupplies.Name_Supplies = Name_Supplies,
+        updateSupplies.Measure = Measure,
+        updateSupplies.Stock = Stock,
+        updateSupplies.SuppliesCategory_ID = SuppliesCategory_ID,
+
+        await updateSupplies.save()
 
         updateSupplies.set(req.body);
         await updateSupplies.save();

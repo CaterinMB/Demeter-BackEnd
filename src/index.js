@@ -6,6 +6,7 @@ import './models/module.model.js'
 import './models/permissionModule.model.js'
 import './models/sale.model.js'
 import './models/saledetail.model.js'
+import './models/losses.model.js'
 
 async function main() {
     try{

@@ -4,7 +4,6 @@ import { getSuppliessByCategory, getSupplies, getSupplie, checkForDuplicates, cr
 const router = Router();
 
 router.get("/supplies", getSupplies);
-router.get("/supplies/category/:id", getSuppliessByCategory);
 router.post("/supplies", checkForDuplicates, createSupplies);
 router.put("/supplies/disable/:id", disableSupplies);
 router.put("/supplies/update/:id", updateSupplies);
