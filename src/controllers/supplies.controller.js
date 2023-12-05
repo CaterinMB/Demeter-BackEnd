@@ -1,6 +1,17 @@
 import { supplies } from "../models/supplies.model.js";
 import { Op } from 'sequelize';
 
+export const getSuppliessByCategory = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const suppliess = await supplies.findAll({ where: { SuppliesCategory_ID: id } })
+        res.json(suppliess);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const getSupplies = async (req, res) => {
     try {
         const ArraySupplies = await supplies.findAll();
@@ -61,7 +72,7 @@ export const createSupplies = async (req, res) => {
             Measure,
             Stock,
             SuppliesCategory_ID,
-            State: true 
+            State: true
         });
 
         res.json(createSupplies);
@@ -92,7 +103,67 @@ export const disableSupplies = async (req, res) => {
     }
 };
 
-export const updateSupplies = async (req, res) => { 
+//sumar la cantidad de la compra
+export const updateUnitSupplieById = async (id, quantity) => {
+    let hasError = false
+    let message = ""
+    let data = null
+
+    try {
+
+        const supply = await supplies.findOne({
+            where: {
+                ID_Supplies: id
+            }
+        });
+
+        if (!supply) {
+            hasError = true
+            message = 'Insumo no encontrado'
+        }
+
+        const currentQuantity = parseFloat(supply.Unit);
+        const newQuantity = parseFloat(quantity);
+
+        // Verificar si las conversiones son válidas
+        if (!isNaN(currentQuantity) && !isNaN(newQuantity)) {
+            // Realizar la suma y actualizar la cantidad del insumo
+            const updatedQuantity = currentQuantity + newQuantity;
+            const updatedSupply = await supply.update({ Unit: updatedQuantity });
+
+            data = updatedSupply;
+        } else {
+            hasError = true;
+            message = 'Las cantidades no son números válidos';
+        }
+
+    } catch (error) {
+        hasError = true
+        message = error.message
+    }
+
+    return {
+        data,
+        hasError,
+        message
+    }
+};
+
+export const updateUnitSupplieByIdAndSend = async (req, res) => {
+    try {
+        const { id, quantity } = req.params
+        const { data, hasError, message } = await updateUnitSupplieById(id, quantity)
+
+        if (hasError) {
+            return res.status(500).json({ message });
+        }
+        return res.json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const updateSupplies = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -112,17 +183,19 @@ export const updateSupplies = async (req, res) => {
 
         await updateSupplies.save()
 
-        res.json(updateSupplies);           
+        updateSupplies.set(req.body);
+        await updateSupplies.save();
+        return res.json(updateSupplies);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
 export const deleteSupplies = async (req, res) => {
-    
+
     try {
         const { id } = req.params;
-        
+
         await supplies.destroy({
             where: {
                 ID_Supplies: id

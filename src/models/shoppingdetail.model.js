@@ -31,7 +31,18 @@ export const shoppingDetail = sequelize.define('ShoppingDetails', {
             }, 
             isInt: true
         },
-    }
+    },
+
+    Measure: {
+        type: DataTypes.STRING(15),
+        allowNull: false, 
+        validate: {
+            notNull:{
+                msg: "La medida del insumo es requerido"
+            }, 
+        },
+    },
+
 }, {
     timestamps: false
 });
