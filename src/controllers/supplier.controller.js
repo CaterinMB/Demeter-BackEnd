@@ -1,8 +1,22 @@
+import { shopping } from '../models/shopping.model.js';
 import {supplier} from '../models/supplier.model.js'
 
 export const getSupplier = async (req, res) => {
     try {
         const ArraySupplier = await supplier.findAll();
+        res.json(ArraySupplier);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getSupplierByState = async (req, res) => {
+    try {
+        const ArraySupplier = await supplier.findAll({
+            where: {
+                State: 1
+            }
+        });
         res.json(ArraySupplier);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -89,6 +103,18 @@ export const deleteSupplier = async (req, res) => {
     try {
         const { id } = req.params;
         
+        const existSupplirInShoppings = await shopping.findOne({
+            where: {
+                Supplier_ID: id
+            }
+        })
+
+        if (existSupplirInShoppings) {
+            return res.status(403).json({
+                message: "El provedor no puede ser eliminado",
+                useDelete: false
+            })
+        }
         await supplier.destroy({
             where: {
                 ID_Supplier: id

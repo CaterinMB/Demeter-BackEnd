@@ -26,6 +26,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
 
+
 app.use(supplierRoutes)
 app.use(shoppingRoutes)
 app.use(shoppingdetailRoute)
