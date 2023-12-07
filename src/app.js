@@ -15,6 +15,7 @@ import productRoutes from './routes/product.routes.js';
 import RoutesSale from './routes/sale.routes.js';
 import RoutesSaleDetail from './routes/saledetail.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js';
+import lossesRoutes from './routes/losses.routes.js'; 
 
 const app = express();
 
@@ -40,5 +41,6 @@ app.use(productRoutes);
 app.use(RoutesSale);
 app.use(RoutesSaleDetail);
 app.use(dashboardRoutes);
+app.use(lossesRoutes);
 
 export default app;

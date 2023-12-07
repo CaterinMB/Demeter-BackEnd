@@ -1,5 +1,4 @@
-    import { sale } from '../models/sale.model.js';
-import { Op } from 'sequelize';
+import { sale } from '../models/sale.model.js';
 
 export const getSale = async (req, res) => {
     try {

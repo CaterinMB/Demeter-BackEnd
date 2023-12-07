@@ -1,10 +1,10 @@
-import { Op } from 'sequelize';
 import { sale } from '../models/sale.model.js';
 import { saleDetail } from '../models/saledetail.model.js';
 import { product } from '../models/product.model.js';
 import { shopping } from '../models/shopping.model.js';
 import { shoppingDetail } from '../models/shoppingdetail.model.js';
 import { supplies } from '../models/supplies.model.js';
+import { sequelize } from '../db/dataBase.js';
 
 
 export const mostPurchasedSupplies = async (req, res) => {
@@ -13,7 +13,7 @@ export const mostPurchasedSupplies = async (req, res) => {
             include: [
                 {
                     model: shoppingDetail,
-                    attributes: ['Supplies_ID', [sequelize.fn('sum', sequelize.col('Lot')), 'totalLot']],
+                    attributes: ['Supplies_ID', [sequelize.fn('SUM', sequelize.col('Lot')), 'totalLot']],
                     group: ['Supplies_ID'],
                     order: [[sequelize.literal('totalLot'), 'DESC']],
                     limit: 5, // Obtener los 5 más comprados
