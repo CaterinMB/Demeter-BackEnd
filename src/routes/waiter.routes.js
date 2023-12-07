@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getWaiters, createWaiter, duplicateWaiter, getWaiter, updateWaiter } from '../controllers/user.controller.js'; // Meseros
+import { getWaiters, createWaiter, duplicateWaiter, getWaiter, updateWaiter } from '../controllers/waiter.controller.js'; // Meseros
 import ModuleValidationMiddleware from '../middlewares/ModuleValidation.middleware.js'
 
 const router = Router();
