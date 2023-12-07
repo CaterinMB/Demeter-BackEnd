@@ -16,11 +16,6 @@ export const module = sequelize.define('Modules', {
         validate: {
             notNull: {
                 msg: "El nombre es requerido"
-            },
-            customValidate(value) {
-                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
-                }
             }
         }
     },
