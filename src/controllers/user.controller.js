@@ -8,7 +8,6 @@ import { Op } from 'sequelize';
 import nodemailer from 'nodemailer';
 import transporter from '../transporter.cjs';
 
-
 export const getUsers = async (req, res) => {
     try {
         const users = await user.findAll({
@@ -27,7 +26,8 @@ export const getUserByState = async (req, res) => {
     try {
         const UserStatus = await user.findAll({
             where: {
-                State: 1
+                State: 1,
+                TypeUser_ID: 1
             }
         });
 

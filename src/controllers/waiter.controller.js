@@ -14,6 +14,22 @@ export const getWaiters = async (req, res) => {
     }
 };
 
+export const getWaiterByState = async (req, res) => {
+
+    try {
+        const WaiterStatus = await user.findAll({
+            where: {
+                State: 1,
+                TypeUser_ID: 2
+            }
+        });
+
+        res.json(WaiterStatus);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const getWaiter = async (req, res) => {
     const { id } = req.params
 
