@@ -20,7 +20,7 @@ export const product =  sequelize.define('Products', {
             },
             customValidate(value) {
                 if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
-                    throw new Error('Nombre: Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
                 }
             }
         }
@@ -38,7 +38,7 @@ export const product =  sequelize.define('Products', {
     },
 
     Image: {
-        type: DataTypes.STRING,
+        type: DataTypes.BLOB,
         allowNull: false,
         validate: {
             notNull: {

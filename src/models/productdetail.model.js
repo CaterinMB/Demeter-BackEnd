@@ -30,22 +30,11 @@ export const productDetail = sequelize.define('ProductDetails', {
                 msg: "La medida del insumo es requerido"
             }, 
             customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
+                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
                 }
             }
         },
-    },
-
-    State: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El estado es requerido'
-            }
-        }
     }
     
 }, {

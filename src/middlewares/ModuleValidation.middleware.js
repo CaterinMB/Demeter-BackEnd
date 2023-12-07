@@ -1,15 +1,17 @@
 import jwt from "jsonwebtoken"
 import { TOKEN_SECRET } from "../config.js"
 import { role } from "../models/role.model.js"
-import { permission } from "../models/permission.model.js"
 import { module } from "../models/module.model.js"
 import { request, response } from "express"
 import { user } from "../models/user.model.js"
+import { modulePermission } from "../models/modulePermission.model.js"
 
 export default class {
 
 
   #errorHandler
+  #res
+  #req
   constructor(errorHandler = ({
     req = request,
     res = response,
@@ -34,18 +36,18 @@ export default class {
     this.#errorHandler = errorHandler
     this.userModel = user
     this.moduleTypes = module
+    this.modulePermission = modulePermission
     this.roleModel = role
   }
 
   getCurrentUserAndRole = async () => {
 
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDEyMTc5MTEsImV4cCI6MTcwMTIxODUxMX0.M1W5cmZ5-L0c3rkJyC-7Eq5X7PHQzu1q57i6650tY_Q"
-    // const user = jwt.verify(token, TOKEN_SECRET)
-    const id = 3
+    const token = this.#req.cookies.token
+    const user = jwt.decode(token, TOKEN_SECRET)
 
     return await this.userModel.findOne({
       where: {
-        ID_User: id
+        ID_User: user?.id
       },
 
       include: [
@@ -60,53 +62,51 @@ export default class {
   hasPermissions = (...moduleView) => {
 
     return async (req, res, next) => {
-      const moduleNames = Array.from(await this.getAssociatedModulePermissionsByRole(req, res, next))
+      try {
+        this.#res = res
+        this.#req = req
+        const moduleNames = Array.from(await this.getAssociatedModulePermissionsByRole())
+        const includes = moduleView.every(m => moduleNames.some(md => md.Module.Name_Module === m))
 
-      const includes = moduleNames.every(md => moduleView.includes(md.Name_Module))
+        if (!includes) {
+          this.#errorHandler({
+            req,
+            res,
+            next,
+            error: new Error("No tienes permisos")
+          })
+          return
+        }
 
-      if (!includes) {
-        this.#errorHandler({
-          req,
-          res,
-          next,
-          error: new Error("No tienes permisos")
-        })
-        return
+        next()
       }
-
-      next()
+      catch (error) {
+        this.#errorHandler({
+          error,
+          next,
+          req,
+          res
+        })
+      }
     }
   }
 
-  getAssociatedModulePermissionsByRole = async (req, res, next) => {
+  getAssociatedModulePermissionsByRole = async () => {
 
-    try {
-      const user = await this.getCurrentUserAndRole()
+    const user = await this.getCurrentUserAndRole()
 
-      if (!user) return null
-      const permissions = await permission.findAll({
-        where: {
-          Role_ID: user.Role_ID
-        },
+    if (!user) throw new Error("El usuario no existe")
+    const permissions = await this.modulePermission.findAll({
+      where: {
+        Role_ID: user.Role_ID
+      },
+      include: [{
+        model: this.moduleTypes,
+        required: true
+      }]
+    })
 
-        include: [
-          {
-            model: this.moduleTypes,
-            require: true
-          }
-        ]
-      })
-
-      return permissions
-    }
-    catch {
-      this.#errorHandler({
-        res,
-        req,
-        error: new Error("Error"),
-        next
-      })
-    }
+    return permissions
   }
 
 

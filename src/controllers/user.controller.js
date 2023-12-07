@@ -1,4 +1,6 @@
 import { user } from '../models/user.model.js';
+import { shopping } from '../models/shopping.model.js';
+import { sale } from '../models/sale.model.js';
 import bcrypt from 'bcryptjs';
 import { createAccessToken } from '../libs/jwt.js';
 import jwt from 'jsonwebtoken';
@@ -111,6 +113,43 @@ export const updateUser = async (req, res) => {
     }
 };
 
+export const toggleUserStatus = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const statusUser = await user.findOne({
+            where: { ID_User: id },
+        });
+
+        if (!statusUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        };
+
+        statusUser.State = !statusUser.State;
+
+        await statusUser.save();
+
+        return res.json(statusUser);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteUser = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        await user.destroy({
+            where: { ID_User: id },
+        });
+
+        return res.sendStatus(204);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+// --------------------------- EditProfile ------------------------------------- //
+
 export const editProfile = async (req, res) => {
     const { id } = req.params
 
@@ -151,48 +190,11 @@ export const changePassword = async (req, res) => {
         updateUser.Password = passwordHast
 
         await updateUser.save();
-
         
         const token = await createAccessToken({ ID_User: userFound.ID_User });
         res.cookie('token', token);
 
         return res.json(updateUser);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const toggleUserStatus = async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        const statusUser = await user.findOne({
-            where: { ID_User: id },
-        });
-
-        if (!statusUser) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        };
-
-        statusUser.State = !statusUser.State;
-
-        await statusUser.save();
-
-        return res.json(statusUser);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const deleteUser = async (req, res) => {
-    const { id } = req.params
-
-    try {
-        await user.destroy({
-            where: { ID_User: id },
-        });
-
-        return res.sendStatus(204);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -276,6 +278,30 @@ export const duplicateWaiter = async (req, res, next) => {
     }
 };
 
+export const updateWaiter = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const { Type_Document, Document, Name_User, LastName_User, Restaurant } = req.body;
+
+        const updateWaiter = await user.findByPk(id)
+
+        updateWaiter.Type_Document = Type_Document
+        updateWaiter.Document = Document
+        updateWaiter.Name_User = Name_User
+        updateWaiter.LastName_User = LastName_User
+        updateWaiter.Restaurant = Restaurant
+
+        await updateWaiter.save();
+
+        return res.json(updateWaiter);
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+// --------------------------- Login ------------------------------------- //
 
 export const login = async (req, res) => {
     const { Email, Password } = req.body

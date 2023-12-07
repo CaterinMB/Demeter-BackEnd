@@ -20,9 +20,8 @@ export const supplies = sequelize.define('Supplies', {
                 msg: "El nombre del insumo es requerido"
             },
             customValidate(value) {
-
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('El nombre del insumo debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
+                    throw new Error('Nombre: Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
                 }
             },
             len: {
@@ -53,8 +52,8 @@ export const supplies = sequelize.define('Supplies', {
                 msg: "La medida del insumo es requerido"
             },
             customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
+                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
                 }
             }
         },

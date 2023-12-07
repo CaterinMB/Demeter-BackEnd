@@ -17,9 +17,8 @@ export const losses =  sequelize.define('Losses', {
                 msg: "El motivo es requerido"
             }, 
             customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('El motivo de la perdida debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^([A-ZÁÉÍÓÚÜÑÑ]([a-zA-ZÁÉÍÓÚÜÑñ,.\s]*)?[.!?])+$/.test(value)) {
+                    throw new Error('Nombre: Se debe comenzar con mayúscula y puede contener letras, espacios, la letra "ñ", comas, puntos, y los signos de puntuación "." "!" "?".');
                 }
             },
             len: {

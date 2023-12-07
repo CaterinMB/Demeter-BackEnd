@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { permissionModule } from './permissionModule.model.js'
+import { modulePermission } from "./modulePermission.model.js";
 
 export const module = sequelize.define('Modules', {
 
@@ -18,9 +18,8 @@ export const module = sequelize.define('Modules', {
                 msg: "El nombre es requerido"
             },
             customValidate(value) {
-
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
                 }
             }
         }
@@ -30,12 +29,12 @@ export const module = sequelize.define('Modules', {
     timestamps: false
 });
 
-module.hasMany(permissionModule, {
+module.hasMany(modulePermission, {
     foreignKey: 'Module_ID',
     sourceKey: 'ID_Module'
 })
 
-permissionModule.belongsTo(module, {
+modulePermission.belongsTo(module, {
     foreignKey: 'Module_ID',
     targetKey: 'ID_Module'
 })
