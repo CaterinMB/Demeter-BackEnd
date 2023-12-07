@@ -115,17 +115,17 @@ export default class {
 /*
 
 id INT AUTO_INCREMENT,
-    modulName VARCHAR(100) NOT NULL,
-    state TINYINT DEFAULT 1,
-    dahsboard,
-    setting,
-    user,
-    categorySupplies,
-    supplies,
-    supplier,
-    categoryProduct,
-    product,
-    waiter,
-    shopping,
-    sales
-    */
+  modulName VARCHAR(100) NOT NULL,
+  state TINYINT DEFAULT 1,
+  dahsboard,
+  setting,
+  user,
+  categorySupplies,
+  supplies,
+  supplier,
+  categoryProduct,
+  product,
+  waiter,
+  shopping,
+  sales
+  */

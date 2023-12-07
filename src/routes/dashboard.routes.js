@@ -15,7 +15,24 @@ import {
     netIncomeBySupply
 } from '../controllers/dashboard.controller.js';
 
+import ModuleValidationMiddleware from '../middlewares/ModuleValidation.middleware.js'
+
 const router = Router();
+
+// const moduleValidation = new ModuleValidationMiddleware(
+//     ({
+//         res,
+//         error
+//     }) => {
+//         res.json({
+//             message: error.message
+//         })
+//     }
+// )
+
+// router.use(moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.DASHBOARD
+// ))
 
 router.get("/dashboard/most-purchased-supplies", mostPurchasedSupplies);
 router.get("/dashboard/most-sold-products", mostSoldProducts);

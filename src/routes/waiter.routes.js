@@ -1,7 +1,6 @@
 import { Router } from "express";
 
-import { createSaleDetail, getDetails, createManyDetails, lotUpd, deleteSaleDetail} from "../controllers/saledetail.controller.js";
-
+import { getWaiters, createWaiter, duplicateWaiter, getWaiter, updateWaiter } from '../controllers/user.controller.js'; // Meseros
 import ModuleValidationMiddleware from '../middlewares/ModuleValidation.middleware.js'
 
 const router = Router();
@@ -18,13 +17,12 @@ const router = Router();
 // )
 
 // router.use(moduleValidation.hasPermissions(
-//     moduleValidation.MODULES.SALES
+//     moduleValidation.MODULES.WAITER
 // ))
 
-router.post('/Csaledetail', createSaleDetail);
-router.post('/CManyDetails', createManyDetails);
-router.get('/details/:id', getDetails);
-router.put('/update',lotUpd )
-router.delete('/deleteDetailS/:ID_SaleDetail',deleteSaleDetail )
+router.get('/waiter', getWaiters);
+router.get('/waiter/:id', getWaiter);
+router.post('/add_waiter', duplicateWaiter, createWaiter);
+router.put('/waiter/:id', updateWaiter);
 
 export default router;
