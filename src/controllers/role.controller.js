@@ -1,11 +1,27 @@
 import { role } from '../models/role.model.js';
 import { typeUser } from '../models/typeuser.model.js';
+import { user } from '../models/user.model.js';
 import { Op } from 'sequelize';
 
 export const getRoles = async (req, res) => {
     try {
         const roles = await role.findAll()
         res.json(roles);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getRoleByState = async (req, res) => {
+
+    try {
+        const RoleStatus = await role.findAll({
+            where: {
+                State: 1
+            }
+        });
+
+        res.json(RoleStatus);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -104,12 +120,28 @@ export const toggleRoleStatus = async (req, res) => {
 };
 
 export const deleteRole = async (req, res) => {
+    const { id } = req.params
+
     try {
-        const { id } = req.params
+
+        const existRoleInUsers = await user.findOne({
+            where: {
+                Role_ID: id
+            }
+        })
+
+        if (existRoleInUsers) {
+            return res.status(403).json({
+                message: "El rol no puede ser eliminado.",
+                useDelete: false
+            })
+        }
 
         await role.destroy({
             where: { ID_Role: id, }
         });
+
+        return res.sendStatus(204);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

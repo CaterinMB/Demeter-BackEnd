@@ -1,6 +1,5 @@
 import { user } from '../models/user.model.js';
 import { shopping } from '../models/shopping.model.js';
-import { sale } from '../models/sale.model.js';
 import bcrypt from 'bcryptjs';
 import { createAccessToken } from '../libs/jwt.js';
 import jwt from 'jsonwebtoken';
@@ -18,6 +17,21 @@ export const getUsers = async (req, res) => {
             }
         });
         res.json(users);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getUserByState = async (req, res) => {
+
+    try {
+        const UserStatus = await user.findAll({
+            where: {
+                State: 1
+            }
+        });
+
+        res.json(UserStatus);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -139,6 +153,19 @@ export const deleteUser = async (req, res) => {
     const { id } = req.params
 
     try {
+        const existUserInShoppings = await shopping.findOne({
+            where: {
+                User_ID: id
+            }
+        })
+
+        if (existUserInShoppings) {
+            return res.status(403).json({
+                message: "El usuario no puede ser eliminado",
+                useDelete: false
+            })
+        }
+
         await user.destroy({
             where: { ID_User: id },
         });

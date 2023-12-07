@@ -1,12 +1,28 @@
 import { product } from '../models/product.model.js';
 import { productDetail } from '../models/productdetail.model.js';
 import { supplies } from '../models/supplies.model.js';
+import { sale } from '../models/sale.model.js';
 import { Op } from 'sequelize';
 
 export const getProducts = async (req, res) => {
     try {
         const products = await product.findAll()
         res.json(products);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getProductByState = async (req, res) => {
+
+    try {
+        const ProductStatus = await product.findAll({
+            where: {
+                State: 1
+            }
+        });
+
+        res.json(ProductStatus);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -105,12 +121,28 @@ export const getProductsByCategory = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
+    const { id } = req.params
+
     try {
-        const { id } = req.params
+        
+        const existProductInSales = await sale.findOne({
+            where: {
+                Product_ID: id
+            }
+        })
+
+        if (existProductInSales) {
+            return res.status(403).json({
+                message: "El producto no puede ser eliminado.",
+                useDelete: false
+            })
+        }
 
         await product.destroy({
             where: { ID_Product: id, }
         });
+
+        return res.sendStatus(204);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -173,7 +205,7 @@ export const createDetailP = async (req, res) => {
             Product_ID: id,
             Supplies_ID: Supplies_ID,
             Measure,
-            Lot_ProductDetail,
+            Lot_ProductDetail: Lot,
             State: true
         })
         res.json(createDetail);
