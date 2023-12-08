@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
 import { user } from './user.model.js'
+import { modulePermission } from "./modulePermission.model.js";
 
 export const role = sequelize.define('Roles', {
 
@@ -46,6 +47,16 @@ role.hasMany(user, {
 })
 
 user.belongsTo(role, {
+    foreignKey: 'Role_ID',
+    targetKey: 'ID_Role'
+})
+
+role.hasMany(modulePermission, {
+    foreignKey: 'Role_ID',
+    sourceKey: 'ID_Role'
+})
+
+modulePermission.belongsTo(role, {
     foreignKey: 'Role_ID',
     targetKey: 'ID_Role'
 })

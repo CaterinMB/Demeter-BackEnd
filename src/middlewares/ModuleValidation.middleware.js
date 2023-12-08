@@ -4,6 +4,7 @@ import { role } from "../models/role.model.js"
 import { module } from "../models/module.model.js"
 import { request, response } from "express"
 import { user } from "../models/user.model.js"
+import { modulePermission } from "../models/modulePermission.model.js"
 
 export default class {
 
@@ -35,6 +36,7 @@ export default class {
     this.#errorHandler = errorHandler
     this.userModel = user
     this.moduleTypes = module
+    this.modulePermission = modulePermission
     this.roleModel = role
   }
 
@@ -42,7 +44,9 @@ export default class {
 
     const token = this.#req.cookies.token
     const user = jwt.decode(token, TOKEN_SECRET)
-    const id = 3
+    const id = 1
+    console.log("user")
+    console.log(user)
 
     return await this.userModel.findOne({
       where: {
@@ -65,7 +69,7 @@ export default class {
         this.#res = res
         this.#req = req
         const moduleNames = Array.from(await this.getAssociatedModulePermissionsByRole())
-        const includes = moduleView.every(m => moduleNames.some(md => md.Name_Module === m))
+        const includes = moduleView.every(m => moduleNames.some(md => md.Module.Name_Module === m))
 
         if (!includes) {
           this.#errorHandler({
@@ -95,10 +99,14 @@ export default class {
     const user = await this.getCurrentUserAndRole()
 
     if (!user) throw new Error("El usuario no existe")
-    const permissions = await this.moduleTypes.findAll({
+    const permissions = await this.modulePermission.findAll({
       where: {
         Role_ID: user.Role_ID
-      }
+      },
+      include: [{
+        model: this.moduleTypes,
+        required: true
+      }]
     })
 
     return permissions

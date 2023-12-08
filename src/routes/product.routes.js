@@ -16,7 +16,7 @@ const moduleValidation = new ModuleValidationMiddleware(
 )
 
 router.use(moduleValidation.hasPermissions(
-  moduleValidation.MODULES.PRODUCT,
+  moduleValidation.MODULES.PRODUCT
 ))
 
 router.get('/product', getProducts);
