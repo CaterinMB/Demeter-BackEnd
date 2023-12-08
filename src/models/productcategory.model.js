@@ -18,13 +18,13 @@ export const productCategory =  sequelize.define('ProductCategorys', {
                 msg: "El nombre es requerido"
             }, 
             customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
                 }
             }
         }
     },
+
 
     State: {
         type: DataTypes.BOOLEAN,
