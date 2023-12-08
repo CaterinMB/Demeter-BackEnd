@@ -4,9 +4,7 @@ import { supplies } from "../models/supplies.model.js";
 
 export const getLosses = async (req, res) => {
     try {
-        const arrayLosses = await losses.findAll({
-            attributes: ['ID_Losses', 'Unit', 'Measure', 'Reason'],
-        });
+        const arrayLosses = await losses.findAll();
         res.json(arrayLosses);
     } catch (error) {
         return res.status(500).json({ mensaje: error.message });
@@ -20,7 +18,6 @@ export const getLoss = async (req, res) => {
             where: {
                 ID_Losses: id
             },
-            attributes: ['ID_Losses', 'Unit', 'Measure', 'Reason'],
         });
         if (!oneLoss) {
             return res.status(404).json({ mensaje: 'Pérdida no encontrada' });
@@ -33,7 +30,7 @@ export const getLoss = async (req, res) => {
 
 export const createLoss = async (req, res) => {
     try {
-        const { Reason, Unit, Measure, Supplies_ID } = req.body;
+        const {  Unit, Measure, Reason, Supplies_ID } = req.body;
 
         const existingSupply = await supplies.findOne({
             where: {
@@ -47,12 +44,11 @@ export const createLoss = async (req, res) => {
             });
         }
 
-        // Permitir que la cantidad de pérdida sea mayor que la cantidad de suministro disponible
-        const createLoss = await losses.create({
-            Reason,
+        const createLoss = await losses.create({ 
             Unit,
             Measure,
-            Supplies_ID,
+            Reason,
+            Supplies_ID
         });
 
         // Actualizar la cantidad de insumo

@@ -9,25 +9,6 @@ export const losses =  sequelize.define('Losses', {
         autoIncrement: true 
     }, 
 
-    Reason: {
-        type: DataTypes.STRING(250), 
-        allowNull: false, 
-        validate:{
-            notNull:{
-                msg: "El motivo es requerido"
-            }, 
-            customValidate(value) {
-                if (!/^([A-ZÁÉÍÓÚÜÑÑ]([a-zA-ZÁÉÍÓÚÜÑñ,.\s]*)?[.!?])+$/.test(value)) {
-                    throw new Error('Nombre: Se debe comenzar con mayúscula y puede contener letras, espacios, la letra "ñ", comas, puntos, y los signos de puntuación "." "!" "?".');
-                }
-            },
-            len: {
-                args: [30, 250],
-                msg: 'El motivo de la perdida debe tener de 30 a 250 caracteres.'
-            }
-        }
-    },
-
     Unit: {
         type: DataTypes.DOUBLE,
         allowNull: false, 
@@ -49,11 +30,30 @@ export const losses =  sequelize.define('Losses', {
                 msg: "La medida del insumo es requerido"
             }, 
             customValidate(value) {
-                if (!/^[A-ZÑñ][a-zA-ZÑñ\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios y la letra "ñ".');
+                if (!/^[A-Za-zÑñ\s()]+$/.test(value)) {
+                    throw new Error('Debe comenzar con mayúscula y puede contener letras, espacios, la letra "ñ" y paréntesis.');
                 }
             }
         },
+    },
+
+    Reason: {
+        type: DataTypes.STRING(250), 
+        allowNull: false, 
+        validate:{
+            notNull:{
+                msg: "El motivo es requerido"
+            }, 
+            customValidate(value) {
+                if (!/^[A-ZÁÉÍÓÚÑa-záéíóúñ\s,.]*$/.test(value)) { // Esta es la validación buena
+                    throw new Error('Se debe comenzar con mayúscula y puede contener letras, espacios, tildes, comas y puntos.');
+                }
+            },
+            len: {
+                args: [10, 250],
+                msg: 'El motivo de la perdida debe tener de 30 a 250 caracteres.'
+            }
+        }
     }
 
 }, {
