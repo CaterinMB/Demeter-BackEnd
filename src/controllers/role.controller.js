@@ -1,3 +1,4 @@
+import { modulePermission } from '../models/modulePermission.model.js';
 import { role } from '../models/role.model.js';
 import { typeUser } from '../models/typeuser.model.js';
 import { Op } from 'sequelize';
@@ -5,6 +6,8 @@ import { Op } from 'sequelize';
 export const getRoles = async (req, res) => {
     try {
         const roles = await role.findAll()
+        console.log("roles")
+        console.log(roles)
         res.json(roles);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -13,7 +16,7 @@ export const getRoles = async (req, res) => {
 
 export const getRole = async (req, res) => {
     const { id } = req.params
-    
+
     try {
         const getRole = await role.findOne({
             where: { ID_Role: id }
@@ -48,6 +51,116 @@ export const checkForDuplicates = async (req, res, next) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const addModuleToRole = async (req, res) => {
+    try {
+        const { moduleId, roleId } = req.params;
+
+        const existingRole = await modulePermission.findOne({
+            where: {
+                Role_ID: roleId,
+                Module_ID: moduleId
+            },
+        });
+
+        if (existingRole) {
+            return res.status(400).json({
+                error: 'El rol ya tiene este modulo asignado',
+            });
+        }
+
+        const createdModulePermission = await modulePermission.create({
+            Role_ID: roleId,
+            Module_ID: moduleId
+        })
+
+        res.json({
+            data: createdModulePermission,
+            message: "Modulo agregado correctamente"
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const addMultipleModuleAndRole = async (req, res) => {
+    try {
+        const modules = req.body;
+        const { roleId } = req.params
+        const data = []
+
+        for await (const moduleId of modules) {
+            const existingRole = await modulePermission.findOne({
+                where: {
+                    Role_ID: roleId,
+                    Module_ID: moduleId
+                },
+            });
+
+            if (existingRole) {
+                return res.status(400).json({
+                    error: 'El rol ya tiene este modulo asignado',
+                });
+            }
+
+            const createdModulePermission = await modulePermission.create({
+                Role_ID: roleId,
+                Module_ID: moduleId
+            })
+
+            data.push(createdModulePermission)
+        }
+
+        res.json({
+            data,
+            message: "Modulo agregado correctamente"
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const addMultipleModuleAndRoleAndDeleteIfExists = async (req, res) => {
+    try {
+        const modules = req.body;
+        const { roleId } = req.params
+        const data = []
+
+        for await (const moduleId of modules) {
+            const existingRole = await modulePermission.findOne({
+                where: {
+                    Role_ID: roleId,
+                    Module_ID: moduleId
+                },
+            });
+
+            if (existingRole) {
+                await modulePermission.destroy({
+                    where: {
+                        Role_ID: roleId,
+                        Module_ID: moduleId
+                    }
+                })
+
+                continue
+            }
+
+            const createdModulePermission = await modulePermission.create({
+                Role_ID: roleId,
+                Module_ID: moduleId
+            })
+
+            data.push(createdModulePermission)
+        }
+
+        res.json({
+            data,
+            message: "Modulo agregado correctamente"
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
 
 export const createRoles = async (req, res) => {
     const { Name_Role } = req.body;

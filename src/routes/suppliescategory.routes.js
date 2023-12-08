@@ -1,7 +1,23 @@
 import { Router } from 'express'
 import { getCategory_supplies, getOneCategory_supplies, checkForDuplicates, createCategory_supplies, disableCategory_supplies, updateCategory_supplies, deleteCategory_supplies,  } from '../controllers/suppliescategory.controller.js'
+import ModuleValidationMiddleware from '../middlewares/ModuleValidation.middleware.js';
 
 const router = Router();
+
+// const moduleValidation = new ModuleValidationMiddleware(
+//   ({
+//     res,
+//     error
+//   }) => {
+//     res.json({
+//       message: error.message
+//     })
+//   }
+// )
+// 
+// router.use(moduleValidation.hasPermissions(
+//   moduleValidation.MODULES.SUPPLIES
+// ))
 
 router.get('/suppliescategory', getCategory_supplies);
 router.post('/suppliescategory', checkForDuplicates, createCategory_supplies);

@@ -35,6 +35,21 @@ export const getUser = async (req, res) => {
     }
 };
 
+export const getCurrentUser = async (req, res) => {
+
+    const token = req.cookies.token
+    console.log(token)
+    const user = jwt.decode(token, TOKEN_SECRET)
+    console.log("user")
+    console.log(user)
+
+    req.params = {
+        ...req.params,
+        id: user?.id || user.ID_User
+    }
+
+    return getUser(req, res)
+}
 export const checkForDuplicates = async (req, res, next) => {
     try {
         const { Document, Email } = req.body;
@@ -75,7 +90,7 @@ export const createUser = async (req, res) => {
             State: true
         });
 
-        const token = await createAccessToken({ id: newUser.id });
+        const token = await createAccessToken({ id: newUser?.ID_User });
 
         res.cookie('token', token);
         res.json({

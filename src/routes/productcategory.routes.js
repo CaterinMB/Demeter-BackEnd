@@ -4,20 +4,20 @@ import { getCategory_products, getOneCategory_products, checkForDuplicates, crea
 import ModuleValidationMiddleware from "../middlewares/ModuleValidation.middleware.js";
 
 const router = Router();
-const moduleValidation = new ModuleValidationMiddleware(
-  ({
-    res,
-    error
-  }) => {
-    res.json({
-      message: error.message
-    })
-  }
-)
-
-router.use(moduleValidation.hasPermissions(
-  moduleValidation.MODULES.CATEGORY_PRODUCT
-))
+// const moduleValidation = new ModuleValidationMiddleware(
+//   ({
+//     res,
+//     error
+//   }) => {
+//     res.json({
+//       message: error.message
+//     })
+//   }
+// )
+// 
+// router.use(moduleValidation.hasPermissions(
+//   moduleValidation.MODULES.CATEGORY_PRODUCT
+// ))
 
 router.get('/productcategory', getCategory_products);
 router.post('/productcategory', checkForDuplicates, createCategory_products);

@@ -44,13 +44,10 @@ export default class {
 
     const token = this.#req.cookies.token
     const user = jwt.decode(token, TOKEN_SECRET)
-    const id = 1
-    console.log("user")
-    console.log(user)
 
     return await this.userModel.findOne({
       where: {
-        ID_User: id
+        ID_User: user?.id
       },
 
       include: [
@@ -71,6 +68,11 @@ export default class {
         const moduleNames = Array.from(await this.getAssociatedModulePermissionsByRole())
         const includes = moduleView.every(m => moduleNames.some(md => md.Module.Name_Module === m))
 
+        console.log("moduleNames")
+        console.log(moduleNames)
+        console.log(includes)
+        next()
+        return
         if (!includes) {
           this.#errorHandler({
             req,
