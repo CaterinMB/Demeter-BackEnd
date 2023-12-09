@@ -45,19 +45,19 @@ export const supplies = sequelize.define('Supplies', {
     },
 
     Measure: {
-        type: DataTypes.STRING(15),
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: "La medida del insumo es requerida"
-            },
-            customValidate(value) {
-                if (!/^[A-Za-zÑñ\s()]+$/.test(value)) {
-                    throw new Error('Debe comenzar con mayúscula y puede contener letras, espacios, la letra "ñ" y paréntesis.');
-                }
-            }
+    type: DataTypes.STRING(15),
+    allowNull: false,
+    validate: {
+        notNull: {
+            msg: "La medida del insumo es requerida"
         },
+        customValidate(value) {
+            if (!/^[A-Za-zÑñ\s()]+$/.test(value)) {
+                throw new Error('Debe comenzar con mayúscula y puede contener letras, espacios, la letra "ñ" y paréntesis.');
+            }
+        }
     },
+},
 
     Stock: {
         type: DataTypes.INTEGER,
