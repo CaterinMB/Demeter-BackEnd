@@ -30,36 +30,43 @@ export const getLoss = async (req, res) => {
 
 export const createLoss = async (req, res) => {
     try {
-        const {  Unit, Measure, Reason, Supplies_ID } = req.body;
-
-        const existingSupply = await supplies.findOne({
-            where: {
-                ID_Supplies: Supplies_ID,
-            },
+      const { Unit, Measure, Reason, Supplies_ID } = req.body;
+  
+      const existingSupply = await supplies.findOne({
+        where: {
+          ID_Supplies: Supplies_ID,
+        },
+      });
+  
+      if (!existingSupply) {
+        return res.status(404).json({
+          error: 'Insumo no encontrado.',
         });
-
-        if (!existingSupply) {
-            return res.status(404).json({
-                error: 'Insumo no encontrado.',
-            });
-        }
-
-        const createLoss = await losses.create({ 
-            Unit,
-            Measure,
-            Reason,
-            Supplies_ID
-        });
-
-        // Actualizar la cantidad de insumo
-        existingSupply.Unit -= Unit;
-        if (existingSupply.Unit < 0) {
-            existingSupply.Unit = 0;
-        }
-        await existingSupply.save();
-
-        res.json(createLoss);
+      }
+  
+      const validMeasures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
+  
+      if (!validMeasures.includes(Measure)) {
+        return res.status(400).json({ mensaje: 'Medida no válida.' });
+      }
+  
+      const createLoss = await losses.create({
+        Unit,
+        Measure,
+        Reason,
+        Supplies_ID,
+      });
+  
+      // Actualizar la cantidad de insumo
+      existingSupply.Unit -= Unit;
+      if (existingSupply.Unit < 0) {
+        existingSupply.Unit = 0;
+      }
+      await existingSupply.save();
+  
+      res.json(createLoss);
     } catch (error) {
-        return res.status(500).json({ mensaje: error.message });
+      return res.status(500).json({ mensaje: error.message });
     }
-};
+  };
+  
