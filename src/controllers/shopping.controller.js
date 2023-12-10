@@ -137,9 +137,10 @@ export const createMultipleShopping = async (req, res) => {
         const data = Array.from(req.body);
         const dataInserted = []
 
-        for await (const { Datetime, Total, State, Supplier_ID, User_ID, shoppingDetails } of data) {
+        for await (const { Datetime,  Invoice_Number, Total, State, Supplier_ID, User_ID, shoppingDetails } of data) {
             const createdShopping = await shopping.create({
                 Datetime,
+                Invoice_Number,
                 Total,
                 State,
                 Supplier_ID,

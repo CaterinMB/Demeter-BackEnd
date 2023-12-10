@@ -40,6 +40,12 @@ export const shopping = sequelize.define('Shoppings', {
                 msg: 'El estado es requerido'
             }
         }
+    },
+
+    Invoice_Number: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: true
     }
 }, {
     timestamps: false
