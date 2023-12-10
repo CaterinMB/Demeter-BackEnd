@@ -75,9 +75,38 @@ export const getShoppingAndSuppliesBySupplierId = async (req, res) => {
                     where: {
                         Supplier_ID: id
                     },
+                    required: true
                 },
                 {
                     model: supplies,
+                    required: true
+                }
+            ]
+        })
+
+        res.json(shoppingAndShoppingDetails);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getShoppingAndSuppliesBySupplierIdAndDateTime = async (req, res) => {
+    try {
+
+        const { id, date } = req.params
+        const shoppingAndShoppingDetails = await shoppingDetail.findAll({
+            include: [
+                {
+                    model: shopping,
+                    where: {
+                        Supplier_ID: id,
+                        Datetime: date
+                    },
+                    required: true
+                },
+                {
+                    model: supplies,
+                    required: true
                 }
             ]
         })
@@ -98,7 +127,7 @@ export const getShoppingAndSuppliesBySupplierIdAndDate = async (req, res) => {
                     model: shopping,
                     where: {
                         Supplier_ID: id,
-                        Datetime: date
+                        // Datetime: date
                     },
                 },
                 {
@@ -136,10 +165,11 @@ export const createMultipleShopping = async (req, res) => {
     try {
         const data = Array.from(req.body);
         const dataInserted = []
+        const date = new Date()
 
-        for await (const { Datetime,  Invoice_Number, Total, State, Supplier_ID, User_ID, shoppingDetails } of data) {
+        for await (const { Invoice_Number, Total, State, Supplier_ID, User_ID, shoppingDetails } of data) {
             const createdShopping = await shopping.create({
-                Datetime,
+                Datetime: date,
                 Invoice_Number,
                 Total,
                 State,

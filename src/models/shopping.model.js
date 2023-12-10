@@ -4,29 +4,29 @@ import { shoppingDetail } from './shoppingdetail.model.js'
 
 export const shopping = sequelize.define('Shoppings', {
 
-    ID_Shopping:{
-        type: DataTypes.INTEGER, 
-        primaryKey: true, 
+    ID_Shopping: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-    }, 
+    },
 
     Datetime: {
-        type: DataTypes.DATE, 
+        type: DataTypes.DATE,
         allowNull: false,
         validate: {
-            notNull:{
+            notNull: {
                 msg: "La fech de la compra es requerido"
             }
         }
     },
 
     Total: {
-        type: DataTypes.DECIMAL(10,2),
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         validate: {
-            notNull:{
+            notNull: {
                 msg: "El total de la compra es requerido"
-            }, 
+            },
             isInt: true
         }
     },
@@ -44,7 +44,6 @@ export const shopping = sequelize.define('Shoppings', {
 
     Invoice_Number: {
         type: DataTypes.STRING,
-        unique: true,
         allowNull: true
     }
 }, {
