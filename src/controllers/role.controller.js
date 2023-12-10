@@ -147,24 +147,114 @@ export const deleteRole = async (req, res) => {
     }
 };
 
-// --------------------------- TypeUser --------------------------- //
+// ------------------------------------- PERMISOS -------------------------------------- //
 
-export const datosType = async (req, res) => {
+export const addModuleToRole = async (req, res) => {
     try {
-        const datos = [
-            { ID_TypeUser: 1, Name_Type: 'Empleados' },
-            { ID_TypeUser: 2, Name_Type: 'Meseros' }
-        ];
+        const { moduleId, roleId } = req.params;
 
-        const result = await Promise.all(datos.map(async (dato) => {
-            return await typeUser.create(dato);
-        }));
+        const existingRole = await modulePermission.findOne({
+            where: {
+                Role_ID: roleId,
+                Module_ID: moduleId
+            },
+        });
+
+        if (existingRole) {
+            return res.status(400).json({
+                error: 'El rol ya tiene este modulo asignado',
+            });
+        }
+
+        const createdModulePermission = await modulePermission.create({
+            Role_ID: roleId,
+            Module_ID: moduleId
+        })
 
         res.json({
-            message: "Datos insertados correctamente",
-            datos: result,
-        });
+            data: createdModulePermission,
+            message: "Modulo agregado correctamente"
+        })
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const addMultipleModuleAndRole = async (req, res) => {
+    try {
+        const modules = req.body;
+        const { roleId } = req.params
+        const data = []
+
+        for await (const moduleId of modules) {
+            const existingRole = await modulePermission.findOne({
+                where: {
+                    Role_ID: roleId,
+                    Module_ID: moduleId
+                },
+            });
+
+            if (existingRole) {
+                return res.status(400).json({
+                    error: 'El rol ya tiene este modulo asignado',
+                });
+            }
+
+            const createdModulePermission = await modulePermission.create({
+                Role_ID: roleId,
+                Module_ID: moduleId
+            })
+
+            data.push(createdModulePermission)
+        }
+
+        res.json({
+            data,
+            message: "Modulo agregado correctamente"
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const addMultipleModuleAndRoleAndDeleteIfExists = async (req, res) => {
+    try {
+        const modules = req.body;
+        const { roleId } = req.params
+        const data = []
+
+        for await (const moduleId of modules) {
+            const existingRole = await modulePermission.findOne({
+                where: {
+                    Role_ID: roleId,
+                    Module_ID: moduleId
+                },
+            });
+
+            if (existingRole) {
+                await modulePermission.destroy({
+                    where: {
+                        Role_ID: roleId,
+                        Module_ID: moduleId
+                    }
+                })
+
+                continue
+            }
+
+            const createdModulePermission = await modulePermission.create({
+                Role_ID: roleId,
+                Module_ID: moduleId
+            })
+
+            data.push(createdModulePermission)
+        }
+
+        res.json({
+            data,
+            message: "Modulo agregado correctamente"
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 };

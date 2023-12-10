@@ -122,7 +122,7 @@ id INT AUTO_INCREMENT,
   user,
   categorySupplies,
   supplies,
-  supplier,
+  supplier,F
   categoryProduct,
   product,
   waiter,
