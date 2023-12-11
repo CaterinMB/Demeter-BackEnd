@@ -87,6 +87,18 @@ export const updateRole = async (req, res) => {
 
         const updateRole = await role.findByPk(id)
 
+        if (!updateRole) {
+            return res.status(404).json({ message: 'Rol no encontrado' });
+        }
+
+        const roleNameLowerCase = updateRole.Name_Role.toLowerCase();
+
+        if (roleNameLowerCase === "administrador") {
+            return res.status(403).json({
+                message: "No se puede actualizar el rol de Administrador.",
+            });
+        }
+
         updateRole.Name_Role = Name_Role
 
         await updateRole.save()
@@ -109,6 +121,14 @@ export const toggleRoleStatus = async (req, res) => {
             return res.status(404).json({ message: 'Rol no encontrado' });
         };
 
+        const roleNameLowerCase = statusRole.Name_Role.toLowerCase();
+
+        if (roleNameLowerCase === "administrador") {
+            return res.status(403).json({
+                message: "No se puede actualizar el estado del rol de Administrador.",
+            });
+        };
+
         statusRole.State = !statusRole.State;
 
         await statusRole.save();
@@ -124,6 +144,23 @@ export const deleteRole = async (req, res) => {
 
     try {
 
+        const roleToDelete = await role.findOne({
+            where: { ID_Role: id },
+        });
+
+        if (!roleToDelete) {
+            return res.status(404).json({ message: 'Rol no encontrado' });
+        };
+
+        const roleNameLowerCase = roleToDelete.Name_Role.toLowerCase();
+
+        if (roleNameLowerCase === "administrador") {
+            return res.status(403).json({
+                message: "No se puede eliminar el rol de Administrador.",
+                useDelete: false
+            });
+        };
+
         const existRoleInUsers = await user.findOne({
             where: {
                 Role_ID: id
@@ -132,7 +169,7 @@ export const deleteRole = async (req, res) => {
 
         if (existRoleInUsers) {
             return res.status(403).json({
-                message: "El rol no puede ser eliminado.",
+                message: "El rol no puede ser eliminado porque esta asociado a un usuario.",
                 useDelete: false
             })
         }

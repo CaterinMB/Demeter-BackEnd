@@ -1,7 +1,6 @@
 import app from './app.js'
 import { sequelize } from './db/dataBase.js'
 
-import './models/module.model.js'
 import './models/modulePermission.model.js'
 import './models/losses.model.js'
 

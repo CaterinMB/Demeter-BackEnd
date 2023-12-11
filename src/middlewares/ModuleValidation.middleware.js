@@ -8,7 +8,6 @@ import { modulePermission } from "../models/modulePermission.model.js"
 
 export default class {
 
-
   #errorHandler
   #res
   #req
@@ -23,9 +22,9 @@ export default class {
       DASHBOARD: "dashboard",
       SETTINGS: "settings",
       USER: "user",
-      CATEGORY_SUPPLIES: "categorySupplier",
+      CATEGORY_SUPPLIES: "categorySupplies",
       SUPPLIES: "supplies",
-      SUPPLIER: "suppliar",
+      SUPPLIER: "supplier",
       CATEGORY_PRODUCT: "categoryProduct",
       PRODUCT: "product",
       WAITER: "waiter",
@@ -113,19 +112,17 @@ export default class {
 }
 
 /*
-
-id INT AUTO_INCREMENT,
-  modulName VARCHAR(100) NOT NULL,
-  state TINYINT DEFAULT 1,
-  dahsboard,
-  setting,
-  user,
-  categorySupplies,
-  supplies,
-  supplier,F
-  categoryProduct,
-  product,
-  waiter,
-  shopping,
-  sales
+  INSERT INTO modules(Name_module)
+VALUES
+("dashboard"),
+("product"),
+("setting"),
+("user"),
+("categorySupplies"),
+("waiter"),
+("shopping"),
+("sales");
+("supplies");
+("supplier");
+("categoryProduct");
   */
